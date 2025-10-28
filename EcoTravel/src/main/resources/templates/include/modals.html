@@ -1,0 +1,67 @@
+<div th:fragment="modals">
+<div id="login-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h2>Iniciar sesión</h2>
+        <form th:action="@{/loguearse}" method="post">
+            <label for="login-correo">Correo</label>
+            <input type="email" id="login-correo" name="email" placeholder="ejemplo@gmail.com" required>
+            
+            <label>Contraseña</label>
+            <div class="password-container">
+                <input type="password" id="login-password" name="contraseña" placeholder="contraseña123" required>
+                <i class="fa-solid fa-eye toggle-password" data-target="login-password"></i>
+            </div>
+
+            <p class="small-link">
+                ¿Aún no estás registrado? 
+                <a href="#" id="open-register-from-login">Registrarse</a>
+            </p>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary close-modal">Volver</button>
+                <button type="submit" class="btn btn-primary">Continuar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="register-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h2>Registro</h2>
+        <form th:action="@{/registrarse}" method="post" th:object="${formularioRegistro}">
+            <label for="reg-nombre">Nombre</label>
+            <input type="text" id="reg-nombre" th:field="*{nombre}" placeholder="Escribe aquí" required>
+            
+            <label for="reg-apellido">Apellido</label>
+            <input type="text" id="reg-apellido" th:field="*{apellido}" placeholder="Escribe aquí" required>
+
+            <label for="reg-correo">Correo</label>
+            <input type="email" id="reg-correo" th:field="*{email}" placeholder="ejemplo@gmail.com" required>
+            
+            <label for="register-dob">Fecha de nacimiento</label>
+            <input type="date" id="register-dob" th:field="*{fechaNacimiento}" placeholder="AAAA-MM-DD" required>
+
+            <label>Contraseña</label>
+            <div class="password-container">
+                <input type="password" id="register-password" th:field="*{contraseña}" placeholder="contraseña123" required>
+                <i class="fa-solid fa-eye toggle-password" data-target="register-password"></i>
+            </div>
+
+            <label>Confirmar contraseña</label>
+            <div class="password-container">
+                <input type="password" id="register-confirm-password" th:field="*{confirmarContraseña}" placeholder="contraseña123" required>
+                <i class="fa-solid fa-eye toggle-password" data-target="register-confirm-password"></i>
+            </div>
+
+            <p class="small-link">
+                ¿Ya estás registrado? <a href="#" id="open-login-from-register">Inicia sesión</a>
+            </p>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary close-modal">Volver</button>
+                <button type="submit" class="btn btn-primary">Continuar</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
