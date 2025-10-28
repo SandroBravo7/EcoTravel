@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTravel - Turismo Sostenible</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+   crossorigin=""/>
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="main-content">
+        <nav class="search-nav">
+            <a href="/" class="active">Vuelos <i class="fa-solid fa-plane-up"></i></a>
+            <a href="#">Paquetes <i class="fa-solid fa-box-open"></i></a>
+            <a href="mapa.html">Mapa <i class="fa-solid fa-map"></i></a>
+            <a href="#">Acerca de Nosotros <i class="fa-solid fa-circle-info"></i></a>
+        </nav>
+
+        <section class="search-box">
+            <form>
+                <div class="radio-options">
+                    <input type="radio" id="ida-vuelta" name="trip-type" checked> <label for="ida-vuelta">Ida y vuelta</label>
+                    <input type="radio" id="solo-ida" name="trip-type"> <label for="solo-ida">Solo ida</label>
+                    <input type="radio" id="multidestino" name="trip-type"> <label for="multidestino">Multidestino</label>
+                </div>
+                
+                <div class="input-fields">
+                    <div class="input-group">
+                        <label for="origen"><i class="fa-solid fa-location-dot"></i></label> 
+                        <select id="origen">
+                            <option>Lima</option>
+                            <option>Arequipa</option>
+                            <option>Cusco</option>
+                            </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="destino"><i class="fa-solid fa-location-dot"></i></label>
+                        <select id="destino">
+                            <option>Lima</option>
+                            <option>Arequipa</option>
+                            <option>Cusco</option>
+                            </select>
+                    </div>
+                    <button type="submit" class="btn btn-search">BUSCAR <i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+        </section>
+
+        <section class="destinations-grid">
+            <article class="destination-card" 
+                    data-img-main="img/lima1.jpg"
+                    data-img-second="img/lima2.jpg"
+                    data-img-third="img/lima3.jpg">
+                
+                <img src="img/lima1.jpg" alt="Lima" class="card-image main-image">
+                
+                <div class="thumbnail-previews">
+                    <span class="preview-dot" data-preview-src="img/lima1.jpg"></span>
+                    <span class="preview-dot" data-preview-src="img/lima2.jpg"></span>
+                    <span class="preview-dot" data-preview-src="img/lima3.jpg"></span>
+                </div>
+                
+                <h2>Lima</h2>
+                <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
+                <div class="card-actions">
+                    <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button> 
+                    <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button> 
+                </div>
+            </article>
+
+            <article class="destination-card"
+                    data-img-main="img/arequipa1.jpg"
+                    data-img-second="img/arequipa2.jpg"
+                    data-img-third="img/arequipa3.jpg">
+
+                <img src="img/arequipa1.jpg" alt="Arequipa" class="card-image main-image">
+                
+                <div class="thumbnail-previews">
+                    <span class="preview-dot" data-preview-src="img/arequipa1.jpg"></span>
+                    <span class="preview-dot" data-preview-src="img/arequipa2.jpg"></span>
+                    <span class="preview-dot" data-preview-src="img/arequipa3.jpg"></span>
+                </div>
+                
+                <h2>Arequipa</h2>
+                <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
+                <div class="card-actions">
+                    <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button> 
+                    <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button> 
+                </div>
+            </article>
+            
+            <article class="destination-card"
+                    data-img-main="img/cusco1.jpg"
+                    data-img-second="img/cusco2.jpg"
+                    data-img-third="img/cusco3.jpg">
+
+                <img src="img/cusco1.jpg" alt="Cusco" class="card-image main-image">
+                
+                <div class="thumbnail-previews">
+                    <span class="preview-dot" data-preview-src="img/cusco1.jpg"></span>
+                    <span class="preview-dot" data-preview-src="img/cusco2.jpg"></span>
+                    <span class="preview-dot" data-preview-src="img/cusco3.jpg"></span>
+                </div>
+                
+                <h2>Cusco</h2>
+                <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
+                <div class="card-actions">
+                    <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button>
+                    <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button>
+                </div>
+            </article>
+        </section>
+
+    </main>
+
+    <div id="modals-placeholder"></div> 
+    <div id="footer-placeholder"></div>
+    <script src="include.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+   crossorigin=""></script>
+</body>
+</html>

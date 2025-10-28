@@ -1,0 +1,460 @@
+/* Colores de ejemplo */
+:root {
+    --color-primary: #38761d; /* Verde Oscuro (para header/footer) */
+    --color-secondary: #6aa84f; /* Verde Botón (para buscar/reservar) */
+    --color-background-card: #f8f0e5; /* Beige/Crema */
+    --color-text-light: #f1f1f1;
+}
+
+/* -------------------- ESTILOS GLOBALES / RESET -------------------- */
+body {
+    margin: 0;
+    font-family: sans-serif; /* Puedes elegir una fuente más moderna si quieres */
+    background-color: white; /* Asegura un fondo blanco en el cuerpo */
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-text-light);
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* -------------------- 1. HEADER SUPERIOR -------------------- */
+.header-top {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between; /* Logo a la izquierda, acciones a la derecha */
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--color-text-light); /* O white, si no usas variables */
+}
+
+.header-actions a {
+    margin-right: 15px;
+    font-size: 1.2em;
+    color: var(--color-text-light); /* Asegura que los íconos sociales se vean blancos */
+}
+
+.btn-login {
+    background: none;
+    color: white;
+    border: 1px solid white;
+    margin-right: 10px;
+}
+
+.btn-register {
+    background-color: var(--color-secondary);
+    color: white;
+}
+
+/* -------------------- 2. MENÚ PRINCIPAL / search-nav -------------------- */
+.search-nav {
+    background-color: white;
+    padding: 10px 40px;
+    display: flex;
+    gap: 30px;
+}
+
+.search-nav a {
+    color: black;
+    padding: 5px 0;
+    font-weight: 500;
+    position: relative;
+}
+
+.search-nav a.active {
+    border-bottom: 3px solid white; /* Línea blanca debajo de la pestaña activa */
+}
+
+.close-tab {
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+
+/* -------------------- 3. BUSCADOR DE VIAJES -------------------- */
+.search-box {
+    background-color: var(--color-secondary); /* Verde más claro para el fondo */
+    padding: 20px 40px;
+}
+
+.search-box form {
+    display: flex;
+    flex-direction: column;
+}
+
+.radio-options {
+    color: white;
+    margin-bottom: 15px;
+}
+
+.radio-options label {
+    margin-right: 20px;
+}
+
+.input-fields {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.input-group {
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    flex-grow: 1; /* Para que ocupen el espacio disponible */
+}
+
+.input-group label {
+    color: var(--color-primary);
+    margin-right: 5px;
+}
+
+.input-group select {
+    border: none;
+    padding: 5px;
+    width: 100%;
+    outline: none; /* Quita el borde azul al hacer clic */
+}
+
+.btn-search {
+    background-color: var(--color-secondary);
+    color: white;
+    padding: 10px 30px;
+    border-radius: 20px; /* Borde más curvo como en tu prototipo */
+    display: flex; /* Asegura que texto e icono estén alineados */
+    align-items: center;
+    gap: 5px; /* Espacio entre el texto "BUSCAR" y el icono */
+}
+
+.btn-search i {
+    color: white; /* Asegura que el icono sea blanco (por el fondo verde del botón) */
+    font-size: 1.1em; /* Un poco más grande para que se note */
+}
+
+
+/* -------------------- 4. CONTENIDO PRINCIPAL (Ya lo tenías, se mantiene) -------------------- */
+.main-content {
+    /* Esto es importante para que el contenido de la página se vea centrado y con un ancho manejable */
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding: 0 40px; /* Asegura un espacio lateral */
+}
+
+.destinations-grid {
+    /* 1. Usamos CSS Grid para el layout de las tarjetas */
+    display: grid;
+    /* 2. Definimos tres columnas de igual ancho (1fr) */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 25px; /* Espacio entre las tarjetas */
+    padding: 40px 0; /* Espacio vertical arriba y abajo del grid */
+}
+
+/* Estilos para cada tarjeta de destino */
+.destination-card {
+    background-color: var(--color-background-card); /* Beige/Crema */
+    border-radius: 15px; /* Bordes redondeados */
+    /* Sombra sutil para darle profundidad, como en el prototipo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
+    padding: 20px;
+    text-align: left; /* Alineamos el texto a la izquierda */
+    position: relative;
+}
+
+/* Contenedor de los puntos de previsualización */
+.thumbnail-previews {
+    position: absolute;
+    /* Centrarlo horizontalmente */
+    left: 50%;
+    transform: translateX(-50%);
+    /* Posicionarlo justo debajo de la imagen */
+    top: 155px; 
+    
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+    
+    /* Ocultar por defecto y mostrar solo al hacer hover en la tarjeta */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.destination-card:hover .thumbnail-previews {
+    opacity: 1;
+}
+
+/* Estilo individual de cada punto */
+.preview-dot {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid var(--color-primary); /* Borde verde oscuro */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Punto activo/seleccionado */
+.preview-dot.active {
+    background-color: var(--color-secondary); /* Usa tu color verde claro */
+}
+
+.destination-card img.card-image {
+    width: 100%;
+    /* Altura fija para que todas las imágenes sean iguales, si es necesario */
+    height: 150px; 
+    object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.destination-card h2 {
+    color: black;
+    font-size: 1.5em;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.destination-card p {
+    color: #333; /* Texto más oscuro para mejor lectura */
+    font-size: 0.9em;
+    line-height: 1.4;
+    height: 90px; /* Fija una altura para que todas las descripciones se vean igual */
+    overflow: hidden; /* Oculta el texto que exceda la altura */
+}
+
+/* Contenedor de botones (Reservar y Info) */
+.card-actions {
+    display: flex;
+    justify-content: space-between; /* Separa los botones a los extremos */
+    align-items: center;
+    margin-top: 15px;
+}
+
+/* Botón de RESERVAR (El botón principal) */
+.btn-reserve {
+    background-color: var(--color-secondary);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px; 
+    font-weight: bold;
+    flex-grow: 1; /* Hace que ocupe la mayor parte del espacio */
+    margin-right: 10px;
+}
+
+/* Botón de INFO/Maleta (El botón secundario circular) */
+.btn-info {
+    background-color: white; /* Fondo blanco */
+    color: #555;
+    /* Para hacerlo un círculo perfecto */
+    width: 40px; 
+    height: 40px; 
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    padding: 0; /* Quitamos el padding por defecto */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* -------------------- 5. FOOTER -------------------- */
+.main-footer {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; /* Alinea el texto a la parte inferior del footer */
+    font-size: 0.9em;
+}
+
+.footer-contact h4, .footer-social h4 {
+    margin-bottom: 5px;
+}
+
+.footer-contact p, .footer-social p {
+    margin-top: 0;
+}
+
+/* Ejemplo para asegurar que los iconos del header sean visibles */
+.header-actions i {
+    color: black !important; /* Forzar el color blanco/claro */
+}
+
+/*-------- 6. MODAL --------*/
+/* -------------------- ESTILOS DE MODALS (INICIAR SESIÓN / REGISTRO) -------------------- */
+
+/* El overlay (fondo semitransparente) que cubre toda la pantalla. */
+.modal-overlay {
+    /* IMPORTANTE: Inicialmente oculto. JS lo cambia a 'flex' para mostrarlo. */
+    display: none; 
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Fondo oscuro semitransparente */
+    background-color: rgba(0, 0, 0, 0.5); 
+    
+    /* Centra el contenido del modal */
+    justify-content: center;
+    align-items: center;
+    
+    /* Asegura que esté por encima de todo el contenido de la página */
+    z-index: 1000; 
+}
+
+/* El cuadro blanco/verde donde va el formulario */
+.modal-content {
+    background-color: #d9ead3; /* El color verde claro de tu prototipo */
+    padding: 40px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px; /* Ancho máximo para que no sea muy grande en escritorio */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+    text-align: center;
+    margin-top: 0;
+    color: #333;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.modal-content label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.modal-content input[type="email"],
+.modal-content input[type="password"],
+.modal-content input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box; /* Incluye padding en el ancho */
+}
+
+/* Contenedor para los botones "Volver" y "Continuar" */
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.modal-actions .btn {
+    padding: 10px 20px;
+    font-size: 1em;
+    flex-basis: 48%; /* Hace que cada botón ocupe casi la mitad del espacio */
+}
+
+/* Estilo para el botón principal (Continuar/Registrar) */
+.modal-actions .btn-primary {
+    background-color: var(--color-secondary); 
+    color: white;
+}
+
+/* Estilo para el botón secundario (Volver) */
+.modal-actions .btn-secondary {
+    background-color: #93c47d; /* Un verde intermedio */
+    color: white;
+}
+
+/* Enlaces de "Ya tienes cuenta" / "No tienes cuenta" */
+.small-link {
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 15px;
+}
+
+.small-link a {
+    color: var(--color-primary); 
+    text-decoration: underline;
+}
+
+/*
+    ADVERTENCIA FINAL: 
+    Para que los botones funcionen, asegúrate de que tu archivo 'include.js' 
+    contenga el código de JavaScript que:
+    1. Carga dinámicamente el archivo 'modals.html' en el #modals-placeholder.
+    2. Tiene las funciones 'openModal' y 'closeModal' para cambiar el 'display' del .modal-overlay.
+*/
+
+/* Contenedor que permite posicionar el ícono dentro del input */
+.password-container {
+    position: relative;
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    margin-bottom: 15px; /* Espaciado entre grupos */
+}
+
+/* Estilo del ícono del ojo */
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Separación del borde derecho */
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #6c757d; /* Color gris suave */
+    font-size: 1.1em;
+    z-index: 10; /* Asegura que el ícono esté por encima del input */
+}
+
+/* Media Query para Móviles */
+@media (max-width: 768px) {
+    .destinations-grid {
+        /* Cambia a una sola columna en pantallas pequeñas */
+        grid-template-columns: 1fr; 
+        padding: 20px;
+    }
+
+    .main-content {
+        padding: 0 20px;
+    }
+}
+
+
+/* -------------------- ESTILOS DEL MAPA -------------------- */
+.map-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px 0; 
+}
+
+/* El ID del mapa debe tener un ancho y una altura definidos */
+#interactive-map {
+    width: 65%; /* Para que ocupe la parte principal */
+    height: 500px; /* ¡Altura CRÍTICA para Leaflet! */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.map-sidebar {
+    width: 35%; /* La barra lateral */
+    /* ... */
+}

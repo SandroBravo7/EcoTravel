@@ -1,0 +1,64 @@
+<div id="login-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h2>Iniciar Sesión</h2>
+        <form>
+            <label for="login-correo">Correo</label>
+            <input type="email" id="login-correo" placeholder="ejemplo@gmail.com" required>
+            
+            <label>Contraseña</label>
+            <div class="password-container">
+                <input type="password" id="login-password" required>
+                <i class="fa-solid fa-eye toggle-password" data-target="login-password"></i>
+            </div>
+
+            <p class="small-link">
+                ¿Aún no estás registrado? <a href="#" id="open-register-from-login">Registrarse</a>
+            </p>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary close-modal">Volver</button>
+                <button type="submit" class="btn btn-primary">Continuar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="register-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h2>Registro</h2>
+        <form>
+            <label for="reg-nombre">Nombre</label>
+            <input type="text" id="reg-nombre" placeholder="Escribe aquí" required>
+            
+            <label for="reg-apellido">Apellido</label>
+            <input type="text" id="reg-apellido" placeholder="Escribe aquí" required>
+
+            <label for="reg-correo">Correo</label>
+            <input type="email" id="reg-correo" placeholder="ejemplo@gmail.com" required>
+            
+            <label for="register-dob">Fecha de nacimiento</label>
+            <input type="text" id="register-dob" placeholder="DD/MM/AA" maxlength="8">
+
+            <label>Contraseña</label>
+            <div class="password-container">
+                <input type="password" id="register-password" required>
+                <i class="fa-solid fa-eye toggle-password" data-target="register-password"></i>
+            </div>
+
+            <label>Confirmar Contraseña</label>
+            <div class="password-container">
+                <input type="password" id="register-confirm-password" required>
+                <i class="fa-solid fa-eye toggle-password" data-target="register-confirm-password"></i>
+            </div>
+
+            <p class="small-link">
+                ¿Ya estás registrado? <a href="#" id="open-login-from-register">Inicia Sesion</a>
+            </p>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary close-modal">Volver</button>
+                <button type="submit" class="btn btn-primary">Continuar</button>
+            </div>
+        </form>
+    </div>
+</div>
