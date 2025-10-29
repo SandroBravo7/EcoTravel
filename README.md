@@ -1,10 +1,3 @@
-Excelente ✅
-Aquí tienes un **README profesional y completo** para tu repositorio en **GitHub** del proyecto **EcoTravel – Turismo Sostenible Inteligente**, siguiendo buenas prácticas de documentación y formato Markdown.
-
-Puedes copiarlo y pegarlo directamente en tu archivo `README.md` 👇
-
----
-
 # 🌿 EcoTravel – Turismo Sostenible Inteligente
 
 ## 🧭 Descripción del Proyecto
