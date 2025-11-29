@@ -1,0 +1,44 @@
+<div th:fragment="reservation-modal">
+    <div id="reservation-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+
+            <h2>Reservar Paquete: <span id="package-name-display"></span></h2>
+
+            <!-- Bloque de Análisis de Gemini -->
+            <div id="ia-route-info" style="margin-top:15px; padding:10px; border:1px solid #ddd; border-radius:8px; margin-bottom:20px; background-color:#f9f9f9;">
+                <h4>🗺️ Análisis y Detalles de Ruta EcoTravel</h4>
+                <p style="margin: 5px 0;">Tiempo de Viaje Estimado: <span id="route-duration-display" style="font-weight: 600;">Calculando...</span></p>
+                <p style="margin: 5px 0;">Distancia Estimada: <span id="route-distance-display" style="font-weight: 600;">Calculando...</span></p>
+                <div id="daily-plan-base" style="margin-top: 15px; padding: 10px; border: 1px dashed #ccc; background-color: #f0f0f0; border-radius: 4px;">
+                </div>
+                <div id="gemini-insights" style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ccc; font-size: 0.95em;">
+                    <p>Cargando análisis de sostenibilidad de la ruta...</p>
+                </div>
+            </div>
+
+            <!-- FORMULARIO DE RESERVA RESTAURADO -->
+            <form th:action="@{/reservar-paquete}" method="post">
+                <input type="hidden" id="package-id-input" name="packageId">
+
+                <label for="res-nombre">Nombre Completo</label>
+                <!-- Rellenar con el nombre de la sesión -->
+                <input type="text" id="res-nombre" name="nombre" th:value="${session.usuarioName}" required>
+
+                <label for="res-correo">Correo Electrónico</label>
+                <input type="email" id="res-correo" name="email" placeholder="ejemplo@gmail.com" required>
+
+                <label for="res-fecha-inicio">Fecha de Inicio Deseada</label>
+                <input type="date" id="res-fecha-inicio" name="fechaInicio" required>
+
+                <label for="res-personas">Número de Personas</label>
+                <input type="number" id="res-personas" name="personas" min="1" max="10" value="1" required>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary close-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

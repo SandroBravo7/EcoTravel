@@ -11,6 +11,11 @@ body {
     margin: 0;
     font-family: sans-serif; /* Puedes elegir una fuente más moderna si quieres */
     background-color: white; /* Asegura un fondo blanco en el cuerpo */
+    /* 1. Habilitar Flexbox en el cuerpo */
+    display: flex;
+    flex-direction: column;
+    /* 2. Asegurar que ocupe al menos la altura de la ventana */
+    min-height: 100vh;
 }
 
 a {
@@ -70,13 +75,50 @@ a {
 
 .search-nav a {
     color: black;
+    /* Mantenemos padding-top: 5px */
     padding: 5px 0;
     font-weight: 500;
-    position: relative;
+
+    /* MODIFICACIONES PARA LA ANIMACIÓN */
+    position: relative; /* CRÍTICO: Necesario para posicionar la raya (::after) */
+    padding-bottom: 8px; /* Damos más espacio para la raya de 3px */
+    transition: color 0.3s ease; /* Suaviza el cambio de color al hacer hover */
 }
 
+/* CREACIÓN DE LA RAYA (PSEUDO-ELEMENTO) */
+.search-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; /* Colocar la raya justo en la parte inferior del enlace */
+    left: 0;
+    width: 100%;
+    height: 3px;
+
+    /* El color del fondo del navbar es blanco. Usamos el color principal o secundario para que se vea */
+    background-color: var(--color-secondary); /* Usa el verde secundario para la raya */
+
+    /* Estado Inicial: La raya tiene ancho CERO. */
+    transform: scaleX(0);
+
+    /* CRÍTICO: Definimos la transición para la animación */
+    transition: transform 0.3s ease-out;
+}
+
+/* ACTIVACIÓN DE LA RAYA Y ESTILO HOVER */
+.search-nav a:hover::after,
+.search-nav a.active::after {
+    /* La raya se expande al 100% de su ancho */
+    transform: scaleX(1);
+}
+
+/* Opcional: Oscurecer un poco el texto al hacer hover para destacarlo más */
+.search-nav a:hover {
+    color: var(--color-secondary);
+}
+
+/* Estilo para el texto de la pestaña activa */
 .search-nav a.active {
-    border-bottom: 3px solid white; /* Línea blanca debajo de la pestaña activa */
+    color: var(--color-secondary); /* Mantiene el texto destacado */
 }
 
 .close-tab {
@@ -148,52 +190,70 @@ a {
 }
 
 
-/* -------------------- 4. CONTENIDO PRINCIPAL (Ya lo tenías, se mantiene) -------------------- */
-.main-content {
-    /* Esto es importante para que el contenido de la página se vea centrado y con un ancho manejable */
-    max-width: 1200px; 
-    margin: 0 auto;
-    padding: 0 40px; /* Asegura un espacio lateral */
+/* -------------------- 4. CONTENIDO PRINCIPAL (DESTINOS / PAQUETES) -------------------- */
+main {
+    /* Nueva regla para que el <main> ocupe el espacio restante y empuje el footer */
+    flex-grow: 1;
 }
 
-.destinations-grid {
+.main-content {
+    /* Mantenemos el centrado y el ancho máximo */
+    max-width: 1200px;
+    margin: 0 auto;
+    /* CAMBIO CLAVE: QUITAR EL PADDING LATERAL DE AQUÍ */
+    padding: 0;
+
+    flex-grow: 1;
+}
+
+.page-title {
+    margin-top: 30px;
+    font-size: 2em;
+    color: var(--color-primary);
+    text-align: center;
+}
+
+.page-subtitle {
+    text-align: center;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+/* Unificamos los selectores de Grid */
+.destinations-grid, .packages-grid {
     /* 1. Usamos CSS Grid para el layout de las tarjetas */
     display: grid;
     /* 2. Definimos tres columnas de igual ancho (1fr) */
-    grid-template-columns: repeat(3, 1fr); 
+    grid-template-columns: repeat(3, 1fr);
     gap: 25px; /* Espacio entre las tarjetas */
     padding: 40px 0; /* Espacio vertical arriba y abajo del grid */
 }
 
-/* Estilos para cada tarjeta de destino */
-.destination-card {
+/* Unificamos los selectores de las Tarjetas */
+.destination-card, .package-card {
     background-color: var(--color-background-card); /* Beige/Crema */
     border-radius: 15px; /* Bordes redondeados */
-    /* Sombra sutil para darle profundidad, como en el prototipo */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     padding: 20px;
-    text-align: left; /* Alineamos el texto a la izquierda */
+    text-align: left;
     position: relative;
+    height: auto; /* Ajuste para que el contenido de Paquetes entre bien */
 }
 
-/* Contenedor de los puntos de previsualización */
+/* Contenedor de los puntos de previsualización (Solo se usa en destination-card de index) */
 .thumbnail-previews {
     position: absolute;
-    /* Centrarlo horizontalmente */
     left: 50%;
     transform: translateX(-50%);
-    /* Posicionarlo justo debajo de la imagen */
-    top: 155px; 
-    
+    top: 155px;
     display: flex;
     gap: 8px;
     z-index: 10;
-    
-    /* Ocultar por defecto y mostrar solo al hacer hover en la tarjeta */
     opacity: 0;
     transition: opacity 0.3s;
 }
 
+/* Mostrar puntos solo al pasar el ratón */
 .destination-card:hover .thumbnail-previews {
     opacity: 1;
 }
@@ -205,74 +265,115 @@ a {
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     cursor: pointer;
-    border: 1px solid var(--color-primary); /* Borde verde oscuro */
+    border: 1px solid var(--color-primary);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* Punto activo/seleccionado */
 .preview-dot.active {
-    background-color: var(--color-secondary); /* Usa tu color verde claro */
+    background-color: var(--color-secondary);
 }
 
-.destination-card img.card-image {
+/* Imágenes de las tarjetas */
+.destination-card img.card-image, .package-card img.card-image {
     width: 100%;
-    /* Altura fija para que todas las imágenes sean iguales, si es necesario */
-    height: 150px; 
-    object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+    height: 150px;
+    object-fit: cover;
     border-radius: 10px;
     margin-bottom: 10px;
 }
 
-.destination-card h2 {
+/* Títulos de las tarjetas */
+.destination-card h2, .package-card h2 {
     color: black;
     font-size: 1.5em;
     margin-top: 5px;
     margin-bottom: 10px;
 }
 
+/* Descripción de las tarjetas (Solo para index) */
 .destination-card p {
-    color: #333; /* Texto más oscuro para mejor lectura */
+    color: #333;
     font-size: 0.9em;
     line-height: 1.4;
-    height: 90px; /* Fija una altura para que todas las descripciones se vean igual */
-    overflow: hidden; /* Oculta el texto que exceda la altura */
+    /* ALTURA MODIFICADA: Suficiente para unas 2-3 líneas, reduce el estiramiento */
+    height: 60px;
+    overflow: hidden;
 }
 
-/* Contenedor de botones (Reservar y Info) */
+/* -------------------- ESTILOS ESPECÍFICOS PARA PAQUETES -------------------- */
+
+.price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: darkred; /* Precio destacado */
+    margin: 5px 0 15px 0;
+}
+
+.route-summary {
+    font-size: 0.9em;
+    color: #333;
+    line-height: 1.4;
+    min-height: 90px; /* Asegura que la sección de resumen no colapse */
+    margin-bottom: 15px;
+}
+
+.route-summary strong {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+
+/* Contenedor de botones (Reservar y Info/Detalles) */
 .card-actions {
     display: flex;
-    justify-content: space-between; /* Separa los botones a los extremos */
+    justify-content: space-between;
     align-items: center;
     margin-top: 15px;
 }
 
-/* Botón de RESERVAR (El botón principal) */
-.btn-reserve {
+/* Botón de RESERVAR (El botón principal - Unificado) */
+.btn-reserve, .open-reserve {
     background-color: var(--color-secondary);
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 20px; 
+    border-radius: 20px;
     font-weight: bold;
-    flex-grow: 1; /* Hace que ocupe la mayor parte del espacio */
+    /* MODIFICADO: Evita que se estire más de lo necesario */
+    flex-grow: 0;
+    width: auto;
     margin-right: 10px;
 }
 
-/* Botón de INFO/Maleta (El botón secundario circular) */
-.btn-info {
-    background-color: white; /* Fondo blanco */
+/* Botón de INFO/Maleta (El botón secundario) */
+.btn-info, .open-details {
+    background-color: white;
     color: #555;
-    /* Para hacerlo un círculo perfecto */
-    width: 40px; 
-    height: 40px; 
+    /* Estilo circular para Index */
+    width: 40px;
+    height: 40px;
     border: 1px solid #ccc;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.2em;
-    padding: 0; /* Quitamos el padding por defecto */
+    padding: 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajuste para el botón de DETALLES de Paquetes (lo quieres rectangular) */
+.package-card .open-details {
+    background-color: #93c47d; /* Un verde intermedio */
+    color: white;
+    padding: 10px 15px;
+    width: auto;
+    height: auto;
+    border-radius: 20px;
+    border: none;
+    box-shadow: none;
+    font-size: 1em;
 }
 
 
@@ -280,24 +381,75 @@ a {
 .main-footer {
     background-color: var(--color-primary);
     color: var(--color-text-light);
-    padding: 20px 40px;
+    padding: 30px 40px; /* Más padding vertical para mejor espacio */
     display: flex;
     justify-content: space-between;
-    align-items: flex-end; /* Alinea el texto a la parte inferior del footer */
+    align-items: center; /* CAMBIO CLAVE: Alinea verticalmente los elementos al centro */
     font-size: 0.9em;
+}
+
+.footer-contact, .footer-social {
+    width: 30%; /* Asigna un ancho a los laterales para un mejor control */
+    margin: 0;
+}
+
+.footer-social {
+    text-align: right;
 }
 
 .footer-contact h4, .footer-social h4 {
     margin-bottom: 5px;
+    margin-top: 0;
 }
 
-.footer-contact p, .footer-social p {
-    margin-top: 0;
+.footer-contact p {
+    /* Limpiamos márgenes de párrafos de contacto */
+    margin-top: 5px;
+    margin-bottom: 0;
+    line-height: 1.2;
+}
+
+/* Estilo de los iconos de redes sociales */
+.footer-social p a {
+    color: var(--color-text-light);
+    /* CAMBIO CLAVE: Usa margen a la izquierda para separarlos unos de otros */
+    margin-left: 10px;
+    margin-right: 0; /* Aseguramos que no haya margen a la derecha */
+    font-size: 1.2em;
+}
+
+/* Asegura que el texto "Nuestras redes:" no tenga margen superior */
+.footer-social p {
+    margin-top: 5px;
 }
 
 /* Ejemplo para asegurar que los iconos del header sean visibles */
 .header-actions i {
     color: black !important; /* Forzar el color blanco/claro */
+}
+
+.footer-brand {
+    text-align: center;
+    width: 30%; /* Dale más espacio al centro */
+}
+
+/* Estilo para el logo en el footer */
+.footer-brand .logo {
+    color: var(--color-text-light);
+    font-size: 2em; /* Haz el logo más grande */
+    margin-bottom: 5px;
+}
+
+.mission-text {
+    margin-top: 0;
+    font-size: 1em;
+    font-style: italic;
+}
+
+.copy {
+    margin-top: 15px;
+    font-size: 0.8em;
+    opacity: 0.8; /* Lo hace menos prominente */
 }
 
 /*-------- 6. MODAL --------*/
@@ -438,6 +590,18 @@ a {
     }
 }
 
+/* Sobrescribe el ancho y la altura máxima solo para el modal de reserva */
+#reservation-modal .modal-content {
+    max-width: 650px; /* Hacemos este modal un poco más ancho para el análisis de texto */
+    max-height: 90vh; /* Máximo 90% de la altura de la ventana */
+    overflow-y: auto; /* Habilita la barra de desplazamiento vertical */
+}
+
+/* Opcional: Para que el fondo del modal de reserva sea blanco y no verde como el de login/registro */
+#reservation-modal .modal-content {
+    background-color: #fff;
+}
+
 
 /* -------------------- ESTILOS DEL MAPA -------------------- */
 .map-container {
@@ -457,4 +621,238 @@ a {
 .map-sidebar {
     width: 35%; /* La barra lateral */
     /* ... */
+}
+
+/* -------------------- 7. ESTILOS DE ACERCA DE NOSOTROS -------------------- */
+
+/* --- SECCIÓN 1: MISIÓN Y VISIÓN --- */
+
+.mission-vision-section {
+    display: flex;
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.mission-card {
+    background-color: #f0fff0; /* Fondo muy claro y limpio */
+    padding: 30px;
+    border-left: 5px solid var(--color-secondary); /* Línea de color para destacar */
+    border-radius: 8px;
+    flex: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.mission-card h2 {
+    color: var(--color-primary);
+    font-size: 1.6em;
+    margin-top: 0;
+}
+
+/* --- SECCIÓN 2: COMPROMISO Y COMPONENTES VISUALES --- */
+
+.commitment-section h2 {
+    color: var(--color-primary);
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+/* El estilo de .image-text-block ya existe, pero añadimos el REVERSE */
+
+/* Nuevo estilo para alternar la imagen y el texto (para el segundo bloque) */
+.image-text-block.reverse-layout {
+    /* Usa flex-direction: row-reverse para poner la imagen a la izquierda */
+    flex-direction: row-reverse;
+}
+
+/* Mantenemos los estilos anteriores de .image-text-block y sus hijos, si no los tienes aún, añádelos: */
+.image-text-block {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    margin: 60px 0;
+    padding: 30px;
+    background-color: var(--color-background-card);
+    border-radius: 10px;
+}
+
+.image-text-block .text-content {
+    flex: 1.5;
+}
+
+.image-text-block .text-content h3 {
+    color: var(--color-primary);
+    font-size: 1.8em;
+    margin-top: 0;
+}
+
+.image-text-block .info-image {
+    flex: 1;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.highlight-red {
+    color: darkred;
+    font-weight: bold;
+}
+
+.highlight-green {
+    color: darkgreen;
+    font-weight: bold;
+}
+
+
+/* --- SECCIÓN 3: VALORES (GRID MODERNO) --- */
+
+.values-section h2 {
+    color: var(--color-primary);
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.value-item {
+    text-align: center;
+    padding: 30px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.value-item:hover {
+    transform: translateY(-5px); /* Pequeño efecto 3D */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.value-item i {
+    font-size: 3em;
+    color: var(--color-secondary);
+    margin-bottom: 15px;
+}
+
+.value-item h3 {
+    color: black;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+/* ================================================================ */
+/* 8. ESTILOS PARA EL CARRUSEL DE PAQUETES (Efecto Peek/Next)      */
+/* ================================================================ */
+
+/* 1. Contenedor Principal: Define el área visible para centrar el contenido */
+/* Modificación: Centrar el contenido que se desliza */
+.carousel-container {
+    position: relative;
+    margin: 20px auto;
+    max-width: 1000px;
+    padding: 0;
+    overflow: hidden;
+
+    /* 🛑 CRÍTICO: Alinea los elementos al centro 🛑 */
+    display: flex; /* Necesario para el centrado inicial */
+    justify-content: center; /* Alinea el packages-grid al centro */
+}
+
+/* Modificación: Asegurar que el contenedor de tarjetas se adapte */
+.packages-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+
+    padding: 40px 0;
+    scroll-behavior: smooth;
+    margin: 0;
+
+    /* 🛑 CRÍTICO: Deshabilita el justify-content: flex-start; aquí 🛑 */
+    /* Dejamos que el JS maneje el transform, pero el contenedor ya está centrado por el padre */
+    justify-content: flex-start; /* Esto es necesario para que el JS calcule el scroll */
+    align-items: center;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* 3. Estilo de la Tarjeta Individual: Tamaño y Efecto Visual */
+.package-card {
+    /* CRÍTICO: La tarjeta NO ocupa el 100% (por ejemplo, 60% del ancho del contenedor) */
+    flex: 0 0 65%;
+    max-width: 650px; /* Ancho máximo para la tarjeta centrada */
+
+    /* Damos espacio a los lados para que las otras tarjetas se vean */
+    margin: 0 10px;
+    padding: 25px;
+
+    /* Efecto de transición para opacidad y escala */
+    transition: all 0.5s ease-in-out;
+
+    /* Estado por defecto: Reducido y con menor opacidad */
+    transform: scale(0.9);
+    opacity: 0.6;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 4. Estilo de la Tarjeta ACTIVA (Centrada y Destacada) */
+.package-card.active {
+    transform: scale(1.05); /* Ligeramente más grande */
+    opacity: 1; /* Totalmente visible */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); /* Sombra destacada */
+    z-index: 5; /* Asegura que esté por encima de las otras */
+}
+
+/* 5. Estilos para los Botones de Navegación */
+/* Los botones se mantienen iguales, pero los movemos a los extremos del CAROUSEL-CONTAINER */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 15px 10px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    opacity: 0.8;
+    transition: opacity 0.2s, background 0.2s;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-btn:hover {
+    opacity: 1;
+    background: var(--color-secondary);
+}
+
+.prev-btn {
+    left: 20px; /* Posicionado un poco más adentro */
+}
+
+.next-btn {
+    right: 20px; /* Posicionado un poco más adentro */
+}
+
+/* Ajuste Responsive para Móviles */
+@media (max-width: 768px) {
+    .carousel-container {
+        padding: 0;
+    }
+
+    .package-card {
+        flex: 0 0 80%; /* Más grande en móvil */
+        margin: 0 5px;
+    }
 }

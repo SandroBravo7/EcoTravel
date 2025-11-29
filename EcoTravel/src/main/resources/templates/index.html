@@ -11,13 +11,17 @@
 </head>
 
 <body>
-    <div id="header-placeholder"></div>
-    <main class="main-content">
+<!-- Guardar el estado de sesión -->
+<input type="hidden" id="session-status" th:value="${session.usuarioId != null}">
+
+<!-- HEADER -->
+<div th:insert="~{include/header :: header}"></div>
+    <main>
         <nav class="search-nav">
             <a th:href="@{/}" class="active">Vuelos <i class="fa-solid fa-plane-up"></i></a>
-            <a href="/#">Paquetes <i class="fa-solid fa-box-open"></i></a>
+            <a th:href="@{/paquetes}">Paquetes <i class="fa-solid fa-box-open"></i></a>
             <a th:href="@{/mapa}">Mapa <i class="fa-solid fa-map"></i></a>
-            <a href="/#">Acerca de Nosotros <i class="fa-solid fa-circle-info"></i></a>
+            <a th:href="@{/acerca}">Acerca de Nosotros <i class="fa-solid fa-circle-info"></i></a>
         </nav>
 
         <section class="search-box">
@@ -49,77 +53,82 @@
                 </div>
             </form>
         </section>
+        <div class="main-content">
+            <section class="destinations-grid">
+                <article class="destination-card"
+                        data-img-main="img/lima1.jpg"
+                        data-img-second="img/lima2.jpg"
+                        data-img-third="img/lima3.jpg">
 
-        <section class="destinations-grid">
-            <article class="destination-card" 
-                    data-img-main="img/lima1.jpg"
-                    data-img-second="img/lima2.jpg"
-                    data-img-third="img/lima3.jpg">
-                
-                <img th:src="@{/img/lima1.jpg}" alt="Lima" class="card-image main-image">
-                
-                <div class="thumbnail-previews">
-                    <span class="preview-dot" data-preview-src="img/lima1.jpg"></span>
-                    <span class="preview-dot" data-preview-src="img/lima2.jpg"></span>
-                    <span class="preview-dot" data-preview-src="img/lima3.jpg"></span>
-                </div>
-                
-                <h2>Lima</h2>
-                <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
-                <div class="card-actions">
-                    <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button> 
-                    <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button> 
-                </div>
-            </article>
+                    <img th:src="@{/img/lima1.jpg}" alt="Lima" class="card-image main-image">
 
-            <article class="destination-card"
-                    data-img-main="img/arequipa1.jpg"
-                    data-img-second="img/arequipa2.jpg"
-                    data-img-third="img/arequipa3.jpg">
+                    <div class="thumbnail-previews">
+                        <span class="preview-dot" data-preview-src="img/lima1.jpg"></span>
+                        <span class="preview-dot" data-preview-src="img/lima2.jpg"></span>
+                        <span class="preview-dot" data-preview-src="img/lima3.jpg"></span>
+                    </div>
 
-                <img th:src="@{/img/arequipa1.jpg}" alt="Arequipa" class="card-image main-image">
-                
-                <div class="thumbnail-previews">
-                    <span class="preview-dot" data-preview-src="img/arequipa1.jpg"></span>
-                    <span class="preview-dot" data-preview-src="img/arequipa2.jpg"></span>
-                    <span class="preview-dot" data-preview-src="img/arequipa3.jpg"></span>
-                </div>
-                
-                <h2>Arequipa</h2>
-                <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
-                <div class="card-actions">
-                    <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button> 
-                    <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button> 
-                </div>
-            </article>
-            
-            <article class="destination-card"
-                    data-img-main="img/cusco1.jpg"
-                    data-img-second="img/cusco2.jpg"
-                    data-img-third="img/cusco3.jpg">
+                    <h2>Lima</h2>
+                    <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
+                    <div class="card-actions">
+                        <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button>
+                        <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button>
+                    </div>
+                </article>
 
-                <img th:src="@{/img/cusco1.jpg}" alt="Cusco" class="card-image main-image">
-                
-                <div class="thumbnail-previews">
-                    <span class="preview-dot" data-preview-src="img/cusco1.jpg"></span>
-                    <span class="preview-dot" data-preview-src="img/cusco2.jpg"></span>
-                    <span class="preview-dot" data-preview-src="img/cusco3.jpg"></span>
-                </div>
-                
-                <h2>Cusco</h2>
-                <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
-                <div class="card-actions">
-                    <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button>
-                    <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button>
-                </div>
-            </article>
-        </section>
+                <article class="destination-card"
+                        data-img-main="img/arequipa1.jpg"
+                        data-img-second="img/arequipa2.jpg"
+                        data-img-third="img/arequipa3.jpg">
 
+                    <img th:src="@{/img/arequipa1.jpg}" alt="Arequipa" class="card-image main-image">
+
+                    <div class="thumbnail-previews">
+                        <span class="preview-dot" data-preview-src="img/arequipa1.jpg"></span>
+                        <span class="preview-dot" data-preview-src="img/arequipa2.jpg"></span>
+                        <span class="preview-dot" data-preview-src="img/arequipa3.jpg"></span>
+                    </div>
+
+                    <h2>Arequipa</h2>
+                    <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
+                    <div class="card-actions">
+                        <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button>
+                        <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button>
+                    </div>
+                </article>
+
+                <article class="destination-card"
+                        data-img-main="img/cusco1.jpg"
+                        data-img-second="img/cusco2.jpg"
+                        data-img-third="img/cusco3.jpg">
+
+                    <img th:src="@{/img/cusco1.jpg}" alt="Cusco" class="card-image main-image">
+
+                    <div class="thumbnail-previews">
+                        <span class="preview-dot" data-preview-src="img/cusco1.jpg"></span>
+                        <span class="preview-dot" data-preview-src="img/cusco2.jpg"></span>
+                        <span class="preview-dot" data-preview-src="img/cusco3.jpg"></span>
+                    </div>
+
+                    <h2>Cusco</h2>
+                    <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
+                    <div class="card-actions">
+                        <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button>
+                        <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button>
+                    </div>
+                </article>
+            </section>
+        </div>
     </main>
 
-    <div th:insert="~{include/modals :: modals}"></div>
-    <div id="footer-placeholder"></div>
-    <script th:src="@{/scripts/include.js}"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<!-- MODALS -->
+<div th:insert="~{include/modals :: modals}"></div>
+
+<!-- FOOTER -->
+<div th:insert="~{include/footer :: footer}"></div>
+
+<!-- SCRIPTS -->
+<script th:src="@{/scripts/include.js}"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 </body>
 </html>
