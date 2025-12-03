@@ -21,3 +21,18 @@ SELECT * FROM usuario;
 
 /*Eliminar la tabla si es necesario*/
 DROP TABLE usuario;
+
+/*Creación de la tabla 'reserva'*/
+CREATE TABLE reserva (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    usuario_id BIGINT NOT NULL,
+    nombre_paquete VARCHAR(255) NOT NULL,
+    fecha_reserva DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fecha_inicio DATE NOT NULL,
+    numero_personas INT NOT NULL,
+    precio_total DECIMAL(10, 2) NOT NULL,
+    estado VARCHAR(50) DEFAULT 'pendiente',
+    detalles_viaje LONGTEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE
+);

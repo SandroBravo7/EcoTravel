@@ -25,29 +25,31 @@
         </nav>
 
         <section class="search-box">
-            <form>
+            <form method="GET" action="#" onsubmit="buscarVuelos(event)">
                 <div class="radio-options">
-                    <input type="radio" id="ida-vuelta" name="trip-type" checked> <label for="ida-vuelta">Ida y vuelta</label>
-                    <input type="radio" id="solo-ida" name="trip-type"> <label for="solo-ida">Solo ida</label>
-                    <input type="radio" id="multidestino" name="trip-type"> <label for="multidestino">Multidestino</label>
+                    <input type="radio" id="ida-vuelta" name="trip-type" value="round" checked> <label for="ida-vuelta">Ida y vuelta</label>
+                    <input type="radio" id="solo-ida" name="trip-type" value="one-way"> <label for="solo-ida">Solo ida</label>
+                    <input type="radio" id="multidestino" name="trip-type" value="multi"> <label for="multidestino">Multidestino</label>
                 </div>
                 
                 <div class="input-fields">
                     <div class="input-group">
                         <label for="origen"><i class="fa-solid fa-location-dot"></i></label> 
-                        <select id="origen">
-                            <option>Lima</option>
-                            <option>Arequipa</option>
-                            <option>Cusco</option>
-                            </select>
+                        <select id="origen" name="origen" required>
+                            <option value="">Selecciona origen</option>
+                            <option value="lima">Lima</option>
+                            <option value="arequipa">Arequipa</option>
+                            <option value="cusco">Cusco</option>
+                        </select>
                     </div>
                     <div class="input-group">
                         <label for="destino"><i class="fa-solid fa-location-dot"></i></label>
-                        <select id="destino">
-                            <option>Lima</option>
-                            <option>Arequipa</option>
-                            <option>Cusco</option>
-                            </select>
+                        <select id="destino" name="destino" required>
+                            <option value="">Selecciona destino</option>
+                            <option value="lima">Lima</option>
+                            <option value="arequipa">Arequipa</option>
+                            <option value="cusco">Cusco</option>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-search">BUSCAR <i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
@@ -69,9 +71,9 @@
                     </div>
 
                     <h2>Lima</h2>
-                    <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
+                    <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes", combina historia colonial con modernidad...</p>
                     <div class="card-actions">
-                        <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button>
+                        <a th:href="@{/paquetes}" class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></a>
                         <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button>
                     </div>
                 </article>
@@ -90,9 +92,9 @@
                     </div>
 
                     <h2>Arequipa</h2>
-                    <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
+                    <p>Arequipa es una ciudad histórica ubicada en el sur de Perú. Famosa por su impresionante arquitectura colonial blanca y el majestuoso Cañón del Colca...</p>
                     <div class="card-actions">
-                        <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button>
+                        <a th:href="@{/paquetes}" class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></a>
                         <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button>
                     </div>
                 </article>
@@ -111,9 +113,9 @@
                     </div>
 
                     <h2>Cusco</h2>
-                    <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
+                    <p>Cusco es la capital histórica del Imperio Inca, ubicada en los Andes peruanos. Puerta de entrada a Machu Picchu y a los misterios de la civilización inca...</p>
                     <div class="card-actions">
-                        <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button>
+                        <a th:href="@{/paquetes}" class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></a>
                         <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button>
                     </div>
                 </article>
@@ -130,5 +132,27 @@
 <!-- SCRIPTS -->
 <script th:src="@{/scripts/include.js}"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+    function buscarVuelos(event) {
+        event.preventDefault();
+        
+        const origen = document.getElementById('origen').value;
+        const destino = document.getElementById('destino').value;
+        const tripType = document.querySelector('input[name="trip-type"]:checked').value;
+        
+        if (origen === destino) {
+            alert('El origen y destino no pueden ser iguales');
+            return;
+        }
+        
+        if (!origen || !destino) {
+            alert('Por favor selecciona origen y destino');
+            return;
+        }
+        
+        // Redirigir a la página de paquetes con parámetros
+        window.location.href = `/paquetes?from=${origen}&to=${destino}&type=${tripType}`;
+    }
+</script>
 </body>
 </html>

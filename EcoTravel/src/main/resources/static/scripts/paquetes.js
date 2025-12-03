@@ -145,6 +145,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Actualiza los campos ocultos del modal
                 document.getElementById('package-id-input').value = packageId;
                 document.getElementById('package-name-display').textContent = nombre;
+                document.getElementById('package-nombre-input').value = nombre;
+                document.getElementById('package-detalles-input').value = dailyPlan || '';
+                // Extrae el precio del elemento si está disponible
+                const priceElement = button.closest('.card-details').querySelector('.price');
+                const priceText = priceElement ? priceElement.textContent : '';
+                const priceMatch = priceText.match(/\$(\d+)/);
+                const price = priceMatch ? priceMatch[1] : '0';
+                document.getElementById('package-precio-input').value = price;
 
                 // 🛑 NUEVA LÓGICA: Mostrar la rutina preestablecida 🛑
                 const planContainer = document.getElementById('daily-plan-base');

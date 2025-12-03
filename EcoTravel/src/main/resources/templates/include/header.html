@@ -13,6 +13,10 @@
                 ¡Hola, <span th:text="${session.usuarioName}">Usuario</span>! 👋
             </span>
 
+            <a th:href="@{/mis-reservas}" class="btn btn-info">
+                <i class="fa-solid fa-bookmark"></i> Mis Reservas
+            </a>
+
             <a th:href="@{/desloguearse}" class="btn btn-danger btn-logout">Cerrar Sesión</a>
         </div>
 

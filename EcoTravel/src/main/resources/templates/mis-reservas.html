@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTravel - Mis Reservas</title>
+    <link rel="stylesheet" th:href="@{/estilos/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <style>
+        .reservas-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .reservas-table-wrapper {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .reservas-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .reservas-table thead {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .reservas-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .reservas-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .reservas-table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .reservas-table tbody tr.fila-cancelada {
+            opacity: 0.6;
+        }
+
+        .estado-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+
+        .estado-pendiente {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .estado-confirmada {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .estado-cancelada {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .center-cell,
+        .precio-cell,
+        .id-cell {
+            text-align: center;
+        }
+
+        .acciones-cell {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 8px 12px;
+            font-size: 0.85em;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-view {
+            background-color: var(--color-secondary);
+            color: white;
+        }
+
+        .btn-cancel {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .no-reservas {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-reservas i {
+            font-size: 3em;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+        }
+
+        .no-reservas h2 {
+            color: var(--color-primary);
+            margin: 20px 0 10px 0;
+        }
+
+        .no-reservas p {
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+
+        .alert {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 15px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .detalle-modal {
+            max-width: 600px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-body {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .detalle-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detalle-item:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            .reservas-table {
+                font-size: 0.9em;
+            }
+
+            .reservas-table th,
+            .reservas-table td {
+                padding: 10px 5px;
+            }
+
+            .acciones-cell {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .btn-small {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .estado-badge {
+                font-size: 0.75em;
+                padding: 4px 8px;
+            }
+
+            .no-reservas {
+                padding: 40px 15px;
+            }
+
+            .no-reservas i {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<!-- Estado de sesión -->
+<input type="hidden" id="session-status" th:value="${session.usuarioId != null}">
+
+<!-- HEADER -->
+<div th:insert="~{include/header :: header}"></div>
+
+<main>
+    <!-- Navegación -->
+    <nav class="search-nav">
+        <a th:href="@{/}">Vuelos <i class="fa-solid fa-plane-up"></i></a>
+        <a th:href="@{/paquetes}">Paquetes <i class="fa-solid fa-box-open"></i></a>
+        <a th:href="@{/mapa}">Mapa <i class="fa-solid fa-map"></i></a>
+        <a th:href="@{/acerca}">Acerca de Nosotros <i class="fa-solid fa-circle-info"></i></a>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <h1 class="page-title"><i class="fa-solid fa-bookmark"></i> Mis Reservas</h1>
+        <p class="page-subtitle">Visualiza y gestiona tus reservas de paquetes eco-sostenibles.</p>
+
+        <!-- Mensaje de error -->
+        <div th:if="${error}" class="alert alert-error">
+            <i class="fa-solid fa-circle-exclamation"></i> <span th:text="${error}"></span>
+        </div>
+
+        <!-- Mensaje de éxito -->
+        <div th:if="${reservaExitosa}" class="alert alert-success">
+            <i class="fa-solid fa-check-circle"></i> <span th:text="${reservaExitosa}"></span>
+        </div>
+
+        <!-- Tabla de reservas -->
+        <div th:if="${reservas != null and reservas.size() > 0}" class="reservas-container">
+            <div class="reservas-table-wrapper">
+                <table class="reservas-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fa-solid fa-hashtag"></i> ID</th>
+                            <th><i class="fa-solid fa-box-open"></i> Paquete</th>
+                            <th><i class="fa-solid fa-calendar"></i> Inicio</th>
+                            <th><i class="fa-solid fa-users"></i> Personas</th>
+                            <th><i class="fa-solid fa-dollar-sign"></i> Total</th>
+                            <th><i class="fa-solid fa-info-circle"></i> Estado</th>
+                            <th><i class="fa-solid fa-clock"></i> Reserva</th>
+                            <th><i class="fa-solid fa-cog"></i> Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="reserva : ${reservas}" th:class="${reserva.estado == 'cancelada' ? 'fila-cancelada' : ''}">
+                            <td th:text="${reserva.id}" class="id-cell"></td>
+                            <td th:text="${reserva.nombrePaquete}" class="nombre-paquete"></td>
+                            <td th:text="${#temporals.format(reserva.fechaInicio, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${reserva.numeroPersonas}" class="center-cell"></td>
+                            <td th:text="'$ ' + ${#numbers.formatDecimal(reserva.precioTotal, 0, 'COMMA', 2, 'POINT')}" class="precio-cell"></td>
+                            <td>
+                                <span th:class="${'estado-badge estado-' + reserva.estado.toLowerCase()}">
+                                    <span th:text="${reserva.estado}"></span>
+                                    <i th:if="${reserva.estado == 'confirmada'}" class="fa-solid fa-check"></i>
+                                    <i th:if="${reserva.estado == 'pendiente'}" class="fa-solid fa-hourglass-half"></i>
+                                    <i th:if="${reserva.estado == 'cancelada'}" class="fa-solid fa-times"></i>
+                                </span>
+                            </td>
+                            <td th:text="${#temporals.format(reserva.fechaReserva, 'dd/MM/yyyy HH:mm')}" class="fecha-reserva"></td>
+                            <td class="acciones-cell">
+                                <button class="btn btn-small btn-view" title="Ver detalles">
+                                    <i class="fa-solid fa-eye"></i> Ver
+                                </button>
+                                <button th:if="${reserva.estado != 'cancelada'}" class="btn btn-small btn-cancel" title="Cancelar reserva">
+                                    <i class="fa-solid fa-trash"></i> Cancelar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Mensaje cuando no hay reservas -->
+        <div th:if="${reservas == null or reservas.size() == 0}" class="no-reservas">
+            <i class="fa-solid fa-inbox"></i>
+            <h2>Sin reservas</h2>
+            <p>Aún no tienes reservas. ¡Haz una reserva hoy para disfrutar de nuestros paquetes eco-sostenibles!</p>
+            <a th:href="@{/paquetes}" class="btn btn-primary">
+                <i class="fa-solid fa-box-open"></i> Explorar Paquetes
+            </a>
+        </div>
+    </div>
+</main>
+
+<!-- MODALS -->
+<div th:insert="~{include/modals :: modals}"></div>
+<div th:insert="~{include/footer :: footer}"></div>
+
+<!-- SCRIPTS -->
+<script th:src="@{/scripts/include.js}"></script>
+</body>
+</html>

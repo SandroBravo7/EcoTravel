@@ -1,9 +1,9 @@
 package com.proyecto.EcoTravel.DTOs;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Email;
 
 public class FormularioReservaPaquete {
 
@@ -25,8 +25,11 @@ public class FormularioReservaPaquete {
     @Min(value = 1, message = "Debe haber al menos una persona.")
     private Integer personas;
 
-    // --- Getters y Setters ---
+    private String nombrePaquete;
+    private Double precioUnitario;
+    private String detallesViaje;
 
+    // --- Getters y Setters ---
     public String getPackageId() {
         return packageId;
     }
@@ -65,5 +68,29 @@ public class FormularioReservaPaquete {
 
     public void setPersonas(Integer personas) {
         this.personas = personas;
+    }
+
+    public String getNombrePaquete() {
+        return nombrePaquete;
+    }
+
+    public void setNombrePaquete(String nombrePaquete) {
+        this.nombrePaquete = nombrePaquete;
+    }
+
+    public Double getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(Double precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
+
+    public String getDetallesViaje() {
+        return detallesViaje;
+    }
+
+    public void setDetallesViaje(String detallesViaje) {
+        this.detallesViaje = detallesViaje;
     }
 }

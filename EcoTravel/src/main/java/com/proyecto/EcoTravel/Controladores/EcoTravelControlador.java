@@ -1,6 +1,7 @@
 package com.proyecto.EcoTravel.Controladores;
 
-import com.proyecto.EcoTravel.DTOs.FormularioReservaPaquete;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,25 +10,32 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.proyecto.EcoTravel.DTOs.FormularioRegistro;
+import com.proyecto.EcoTravel.DTOs.FormularioReservaPaquete;
+import com.proyecto.EcoTravel.Servicios.ReservaServicio;
 import com.proyecto.EcoTravel.Servicios.UsuarioServicio;
+import com.proyecto.EcoTravel.modelos.Reserva;
+
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
 public class EcoTravelControlador {
-    
-    private final UsuarioServicio usuarioServicio;
 
-    public EcoTravelControlador(UsuarioServicio usuarioServicio) {
+    private final UsuarioServicio usuarioServicio;
+    private final ReservaServicio reservaServicio;
+
+    public EcoTravelControlador(UsuarioServicio usuarioServicio, ReservaServicio reservaServicio) {
         this.usuarioServicio = usuarioServicio;
+        this.reservaServicio = reservaServicio;
     }
 
     @PostMapping("/registrarse")
-    public String registroSubmit( @Valid @ModelAttribute FormularioRegistro form, 
-                                BindingResult bindingResult, 
-                                Model model,
-                                RedirectAttributes redirectAttributes) {
+    public String registroSubmit(@Valid @ModelAttribute FormularioRegistro form,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("registroError", "Completa correctamente los campos.");
             return "index";
@@ -48,12 +56,12 @@ public class EcoTravelControlador {
 
     @PostMapping("/loguearse")
     public String logeoSubmit(@RequestParam("email") String email,
-                              @RequestParam("contraseña") String contraseña,
-                              // 🛑 ACEPTA el nuevo parámetro desde el formulario
-                              @RequestParam(value = "redirectUrl", required = false) String redirectUrl,
-                              HttpSession sesion,
-                              Model model,
-                              RedirectAttributes redirectAttributes) {
+            @RequestParam("contraseña") String contraseña,
+            // 🛑 ACEPTA el nuevo parámetro desde el formulario
+            @RequestParam(value = "redirectUrl", required = false) String redirectUrl,
+            HttpSession sesion,
+            Model model,
+            RedirectAttributes redirectAttributes) {
 
         boolean ok = usuarioServicio.autenticar(email, contraseña);
         if (!ok) {
@@ -126,13 +134,49 @@ public class EcoTravelControlador {
     // Método para manejar el envío del formulario de reserva (NUEVO)
     @PostMapping("/reservar-paquete")
     public String reservarPaqueteSubmit(@ModelAttribute FormularioReservaPaquete form,
-                                        RedirectAttributes redirectAttributes) {
+            HttpSession sesion,
+            RedirectAttributes redirectAttributes) {
 
-        // **Falta la lógica real de tu servicio para guardar la reserva**
-        System.out.println("Reserva recibida para el paquete ID: " + form.getPackageId() + " por " + form.getNombre());
+        // Verificar si el usuario está autenticado
+        Long usuarioId = (Long) sesion.getAttribute("usuarioId");
+        if (usuarioId == null) {
+            redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para reservar.");
+            return "redirect:/paquetes";
+        }
 
-        redirectAttributes.addFlashAttribute("reservaExitosa", "¡Reserva confirmada! Te contactaremos pronto.");
+        try {
+            // Guardar la reserva
+            reservaServicio.guardarReserva(form, usuarioId);
+            redirectAttributes.addFlashAttribute("reservaExitosa", "¡Reserva confirmada! Puedes verla en 'Mis Reservas'.");
+        } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("error", "Error al procesar la reserva: " + ex.getMessage());
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("error", "Error interno al guardar la reserva.");
+        }
 
         return "redirect:/paquetes";
+    }
+
+    // Método para mostrar las reservas del usuario
+    @GetMapping("/mis-reservas")
+    public String mostrarMisReservas(HttpSession sesion, Model model) {
+        Long usuarioId = (Long) sesion.getAttribute("usuarioId");
+
+        if (usuarioId == null) {
+            return "redirect:/";
+        }
+
+        try {
+            List<Reserva> reservas = reservaServicio.obtenerReservasPorUsuario(usuarioId);
+            model.addAttribute("reservas", reservas);
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("error", ex.getMessage());
+        }
+
+        if (!model.containsAttribute("formularioRegistro")) {
+            model.addAttribute("formularioRegistro", new FormularioRegistro());
+        }
+
+        return "mis-reservas";
     }
 }

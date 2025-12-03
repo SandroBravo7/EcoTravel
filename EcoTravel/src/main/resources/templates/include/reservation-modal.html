@@ -19,6 +19,9 @@
             <!-- FORMULARIO DE RESERVA RESTAURADO -->
             <form th:action="@{/reservar-paquete}" method="post">
                 <input type="hidden" id="package-id-input" name="packageId">
+                <input type="hidden" id="package-nombre-input" name="nombrePaquete">
+                <input type="hidden" id="package-detalles-input" name="detallesViaje">
+                <input type="hidden" id="package-precio-input" name="precioUnitario">
 
                 <label for="res-nombre">Nombre Completo</label>
                 <!-- Rellenar con el nombre de la sesión -->
