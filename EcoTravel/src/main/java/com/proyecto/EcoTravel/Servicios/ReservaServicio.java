@@ -1,5 +1,6 @@
 package com.proyecto.EcoTravel.Servicios;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -28,15 +29,10 @@ public class ReservaServicio {
      * Guardar una nueva reserva
      */
     public Reserva guardarReserva(FormularioReservaPaquete formulario, Long usuarioId) {
-        Optional<Usuario> usuarioOpt = usuarioRepositorio.findById(usuarioId);
+        Usuario usuario = usuarioRepositorio.findById(usuarioId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
-        if (usuarioOpt.isEmpty()) {
-            throw new IllegalArgumentException("Usuario no encontrado");
-        }
-
-        Usuario usuario = usuarioOpt.get();
         Reserva reserva = new Reserva();
-
         reserva.setUsuario(usuario);
         reserva.setNombrePaquete(formulario.getNombrePaquete());
         reserva.setNumeroPersonas(formulario.getPersonas());
@@ -50,8 +46,12 @@ public class ReservaServicio {
         }
 
         // Calcular precio total (precio por persona * número de personas)
-        Double precioUnitario = formulario.getPrecioUnitario() != null ? formulario.getPrecioUnitario() : 0.0;
-        reserva.setPrecioTotal(precioUnitario * formulario.getPersonas());
+        BigDecimal precioUnitario = formulario.getPrecioUnitario() != null
+                ? BigDecimal.valueOf(formulario.getPrecioUnitario())
+                : BigDecimal.ZERO;
+
+        BigDecimal precioTotal = precioUnitario.multiply(BigDecimal.valueOf(formulario.getPersonas()));
+        reserva.setPrecioTotal(precioTotal);
 
         reserva.setDetallesViaje(formulario.getDetallesViaje());
         reserva.setEstado("pendiente");
@@ -63,13 +63,10 @@ public class ReservaServicio {
      * Obtener todas las reservas de un usuario
      */
     public List<Reserva> obtenerReservasPorUsuario(Long usuarioId) {
-        Optional<Usuario> usuarioOpt = usuarioRepositorio.findById(usuarioId);
+        Usuario usuario = usuarioRepositorio.findById(usuarioId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
-        if (usuarioOpt.isEmpty()) {
-            throw new IllegalArgumentException("Usuario no encontrado");
-        }
-
-        return reservaRepositorio.findByUsuarioOrderByFechaReservaDesc(usuarioOpt.get());
+        return reservaRepositorio.findByUsuarioOrderByFechaReservaDesc(usuario);
     }
 
     /**
@@ -83,15 +80,10 @@ public class ReservaServicio {
      * Actualizar estado de una reserva
      */
     public Reserva actualizarEstadoReserva(Long reservaId, String nuevoEstado) {
-        Optional<Reserva> reservaOpt = reservaRepositorio.findById(reservaId);
+        Reserva reserva = reservaRepositorio.findById(reservaId)
+                .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada"));
 
-        if (reservaOpt.isEmpty()) {
-            throw new IllegalArgumentException("Reserva no encontrada");
-        }
-
-        Reserva reserva = reservaOpt.get();
         reserva.setEstado(nuevoEstado);
-
         return reservaRepositorio.save(reserva);
     }
 
@@ -102,7 +94,6 @@ public class ReservaServicio {
         if (!reservaRepositorio.existsById(reservaId)) {
             throw new IllegalArgumentException("Reserva no encontrada");
         }
-
         reservaRepositorio.deleteById(reservaId);
     }
 }
