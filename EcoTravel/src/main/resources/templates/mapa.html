@@ -4,58 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoTravel - Mapa de Destinos</title>
+
+    <!-- Estilos propios -->
     <link rel="stylesheet" th:href="@{/estilos/styles.css}">
-    
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-    
+
+    <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
-    
+
+    <!-- Leaflet Routing Machine -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.ExtraMarkers/2.1.0/css/leaflet.extra-markers.min.css" />
-    <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js"></script>
+
+    <!-- Leaflet Extra Markers -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css" />
+    <script src="https://unpkg.com/leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js"></script>
 </head>
 
 <body>
-    <div id="header-placeholder"></div>
+<!-- Guardar el estado de sesión -->
+<input type="hidden" id="session-status" th:value="${session.usuarioId != null}">
 
-    <main class="main-content">
-        <nav class="search-nav">
-            <a th:href="@{/index}">Vuelos <i class="fa-solid fa-plane-up"></i></a>
-            <a href="#">Paquetes <i class="fa-solid fa-box-open"></i></a>
-            <a th:href="@{/mapa}" class="active">Mapa <i class="fa-solid fa-map"></i></a>
-            <a href="#">Acerca de Nosotros <i class="fa-solid fa-circle-info"></i></a>
-        </nav>
+<!-- Header -->
+<header th:insert="~{include/header :: header}"></header>
 
+<main>
+    <!-- Navegación -->
+    <nav class="search-nav">
+        <a th:href="@{/index}">Vuelos <i class="fa-solid fa-plane-up"></i></a>
+        <a th:href="@{/paquetes}">Paquetes <i class="fa-solid fa-box-open"></i></a>
+        <a th:href="@{/mapa}" class="active">Mapa <i class="fa-solid fa-map"></i></a>
+        <a th:href="@{/acerca}">Acerca de Nosotros <i class="fa-solid fa-circle-info"></i></a>
+    </nav>
+
+    <div class="main-content">
         <section class="map-section">
             <div class="map-container">
-                <div id="interactive-map" style="height: 500px;"></div> 
-                
+                <div id="interactive-map" style="height: 500px;"></div>
+
                 <div class="map-sidebar">
                     <div class="search-input-group">
                         <input type="text" id="search-destination-input" placeholder="Busca tu destino">
-                        <i class="fa-solid fa-magnifying-glass" id="search-button"></i> 
+                        <i class="fa-solid fa-magnifying-glass" id="search-button"></i>
                         <i class="fa-solid fa-microphone"></i>
                     </div>
                     <div class="recommendations">
-                        <p>Recomendación:</p>
-                        <div class="recommendation-item" data-coords="-12.043, -77.028" data-name="Centro de Lima">Centro de Lima</div>
-                        <div class="recommendation-item" data-coords="-12.121, -77.030" data-name="El Malecon">El Malecon</div>
+                        <p>Rutas Sostenibles Destacadas:</p>
+                        <div class="recommendation-item" data-lat="-12.0464" data-lon="-77.0428" data-name="Lima">Lima</div>
+                        <div class="recommendation-item" data-lat="-13.5183" data-lon="-71.9705" data-name="Cusco">Cusco</div>
+                        <div class="recommendation-item" data-lat="-16.4090" data-lon="-71.5350" data-name="Arequipa">Arequipa</div>
+                        <div id="ruta-info"></div>
                     </div>
                 </div>
             </div>
         </section>
-    </main>
+    </div>
+</main>
 
-    <div id="modals-placeholder"></div> 
-    <div id="footer-placeholder"></div>
+<!-- MODALS -->
+<div th:insert="~{include/modals :: modals}"></div>
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDaeWicvigtP9xPv919E-RNoxfvC-Hqik&libraries=places"></script>
-    
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.ExtraMarkers/2.1.0/js/leaflet.extra-markers.min.js"></script>
+<!-- FOOTER -->
+<footer th:insert="~{include/footer :: footer}"></footer>
 
-    <script th:src="@{/scripts/include.js}"></script>
-
+<!-- Scripts -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+<script th:src="@{/scripts/include.js}"></script>
+<script th:src="@{/scripts/mapa.js}"></script>
 </body>
 </html>

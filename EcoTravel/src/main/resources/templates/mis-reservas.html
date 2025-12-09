@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTravel - Mis Reservas</title>
+    <link rel="stylesheet" th:href="@{/estilos/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+
+<body>
+<input type="hidden" id="session-status" th:value="${session.usuarioId != null}">
+
+<header th:insert="~{include/header :: header}"></header>
+
+<main>
+    <nav class="search-nav">
+        <a th:href="@{/}">Vuelos <i class="fa-solid fa-plane-up"></i></a>
+        <a th:href="@{/paquetes}">Paquetes <i class="fa-solid fa-box-open"></i></a>
+        <a th:href="@{/mapa}">Mapa <i class="fa-solid fa-map"></i></a>
+        <a th:href="@{/acerca}">Acerca de Nosotros <i class="fa-solid fa-circle-info"></i></a>
+    </nav>
+
+    <div class="main-content">
+        <h1 class="page-title"><i class="fa-solid fa-bookmark"></i> Mis Reservas</h1>
+        <p class="page-subtitle">Visualiza y gestiona tus reservas de paquetes eco-sostenibles.</p>
+
+        <div th:if="${error}" class="alert alert-error">
+            <i class="fa-solid fa-circle-exclamation"></i> <span th:text="${error}"></span>
+        </div>
+
+        <div th:if="${reservaExitosa}" class="alert alert-success">
+            <i class="fa-solid fa-check-circle"></i> <span th:text="${reservaExitosa}"></span>
+        </div>
+
+        <div th:if="${reservas != null and !reservas.isEmpty()}" class="reservas-container">
+            <div class="reservas-table-wrapper">
+                <table class="reservas-table">
+                    <thead>
+                    <tr>
+                        <th><i class="fa-solid fa-hashtag"></i> ID</th>
+                        <th><i class="fa-solid fa-box-open"></i> Paquete</th>
+                        <th><i class="fa-solid fa-calendar"></i> Inicio</th>
+                        <th><i class="fa-solid fa-users"></i> Personas</th>
+                        <th><i class="fa-solid fa-dollar-sign"></i> Total</th>
+                        <th><i class="fa-solid fa-info-circle"></i> Estado</th>
+                        <th><i class="fa-solid fa-clock"></i> Reserva</th>
+                        <th><i class="fa-solid fa-cog"></i> Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="reserva : ${reservas}" th:class="${reserva.estado == 'cancelada' ? 'fila-cancelada' : ''}">
+                        <td th:text="${reserva.id}" class="id-cell"></td>
+                        <td th:text="${reserva.nombrePaquete}"></td>
+
+                        <td th:text="${reserva.fechaInicio}"></td>
+
+                        <td th:text="${reserva.numeroPersonas}" class="center-cell"></td>
+
+                        <td th:text="'$ ' + ${reserva.precioTotal}" class="precio-cell"></td>
+
+                        <td>
+                            <span th:if="${reserva.estado == 'confirmada'}" class="estado-badge estado-confirmada">Confirmada</span>
+                            <span th:if="${reserva.estado == 'cancelada'}" class="estado-badge estado-cancelada">Cancelada</span>
+                            <span th:if="${reserva.estado == 'pendiente'}" class="estado-badge estado-pendiente">Pendiente</span>
+                        </td>
+
+                        <td th:text="${#temporals.format(reserva.fechaReserva, 'dd/MM/yyyy HH:mm')}" class="fecha-reserva"></td>
+
+                        <td class="acciones-cell">
+                            <a th:href="@{'/detalle-reserva/' + ${reserva.id}}" class="btn btn-small btn-view" title="Ver detalles" style="text-decoration: none;">
+                                <i class="fa-solid fa-eye"></i> Ver
+                            </a>
+
+                            <a th:if="${reserva.estado != 'cancelada'}"
+                               th:href="@{'/cancelar-reserva/' + ${reserva.id}}"
+                               class="btn btn-small btn-cancel"
+                               title="Cancelar reserva"
+                               onclick="return confirm('¿Estás seguro de que deseas cancelar esta reserva?');"> <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div th:if="${reservas == null or reservas.isEmpty()}" class="no-reservas">
+            <i class="fa-solid fa-inbox"></i>
+            <h2>Sin reservas</h2>
+            <p>Aún no tienes reservas. ¡Haz una reserva hoy para disfrutar de nuestros paquetes eco-sostenibles!</p>
+            <a th:href="@{/paquetes}" class="btn btn-primary">
+                <i class="fa-solid fa-box-open"></i> Explorar Paquetes
+            </a>
+        </div>
+    </div>
+</main>
+
+<th:block th:insert="~{include/modals :: modals}"></th:block>
+
+<footer th:insert="~{include/footer :: footer}"></footer>
+
+<script th:src="@{/scripts/include.js}"></script>
+</body>
+</html>

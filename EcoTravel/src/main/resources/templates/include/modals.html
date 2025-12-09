@@ -3,6 +3,8 @@
     <div class="modal-content">
         <h2>Iniciar sesión</h2>
         <form th:action="@{/loguearse}" method="post">
+            <!-- 🛑 NUEVO CAMPO OCULTO: Almacenará la URL actual -->
+            <input type="hidden" id="login-redirect-url" name="redirectUrl" value="/">
             <label for="login-correo">Correo</label>
             <input type="email" id="login-correo" name="email" placeholder="ejemplo@gmail.com" required>
             

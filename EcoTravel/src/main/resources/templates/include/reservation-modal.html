@@ -1,0 +1,102 @@
+<div th:fragment="reservation-modal">
+    <div id="reservation-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content modal-large">
+
+            <div class="modal-header-simple">
+                <h2>Reservar: <span id="package-name-display" style="color:var(--color-primary)"></span></h2>
+                <button type="button" class="close-modal-x close-modal">&times;</button>
+            </div>
+
+            <div class="modal-body-grid">
+
+                <div class="modal-col-left">
+                    <div id="content-to-print" style="background-color: #ffffff; color: #000000; padding: 15px; border-radius: 8px;">
+                        <div id="ia-route-info" class="info-box">
+                            <h4>🗺️ Análisis EcoTravel</h4>
+                            <p><i class="fa-solid fa-clock"></i> Tiempo: <span id="route-duration-display">...</span></p>
+                            <p><i class="fa-solid fa-route"></i> Distancia: <span id="route-distance-display">...</span></p>
+
+                            <div id="daily-plan-base" class="scroll-box"></div>
+
+                            <div id="gemini-insights" class="gemini-box">
+                                <p>Cargando análisis de IA...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="btn-download-pdf" class="btn btn-small" style="margin-top:10px; background:#333; color:white; width:100%;">
+                        <i class="fa-solid fa-file-pdf"></i> Descargar Info en PDF
+                    </button>
+                </div>
+
+                <div class="modal-col-right">
+                    <form th:action="@{/reservar-paquete}" method="post">
+                        <input type="hidden" id="package-id-input" name="packageId">
+
+                        <input type="hidden" id="base-price-input" value="0">
+
+                        <label>Viajero Principal</label>
+                        <input type="text" name="nombre" th:value="${session.usuarioName}" readonly style="background-color:#eee; cursor:not-allowed;">
+
+                        <label>Correo de Confirmación</label>
+                        <input type="email" name="email" placeholder="ejemplo@correo.com" required>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Fecha Inicio</label>
+                                <input type="date" name="fechaInicio" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Días</label>
+                                <input type="number" id="res-dias" name="dias" min="1" max="30" value="1" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Personas</label>
+                                <input type="number" id="res-personas" name="personas" min="1" max="10" value="1" required>
+                            </div>
+                        </div>
+
+                        <div style="background: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center; color: #0d47a1;">
+                            <strong>Total Estimado: </strong> <span id="live-price" style="font-size: 1.2em;">$0.00</span>
+                        </div>
+
+                        <label>Notas / Dietas Especiales (Opcional)</label>
+                        <textarea name="notas" rows="2" placeholder="Ej: Soy vegetariano, necesito silla de ruedas..."></textarea>
+
+                        <div class="payment-simulation">
+                            <h4><i class="fa-solid fa-credit-card"></i> Método de Pago</h4>
+                            <div class="card-icons">
+                                <i class="fa-brands fa-cc-visa" style="color:#1A1F71;"></i>
+                                <i class="fa-brands fa-cc-mastercard" style="color:#EB001B;"></i>
+                            </div>
+
+                            <label style="font-size: 0.85em; margin-top:10px;">Número de Tarjeta</label>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-lock"></i>
+                                <input type="text" id="cc-number" placeholder="0000 0000 0000 0000" maxlength="19" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label style="font-size: 0.85em;">Caducidad</label>
+                                    <input type="text" id="cc-expiry" placeholder="MM/YY" maxlength="5" style="text-align:center" required>
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size: 0.85em;">CVV</label>
+                                    <input type="password" placeholder="123" maxlength="3" style="text-align:center" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-actions-compact">
+                            <button type="submit" class="btn btn-primary" style="width:100%">Confirmar Reserva</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

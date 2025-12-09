@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTravel - Paquetes y Ofertas</title>
+    <link rel="stylesheet" th:href="@{/estilos/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+
+<body>
+<!-- Guardar el estado de sesión -->
+<input type="hidden" id="session-status" th:value="${session.usuarioId != null}">
+
+<!-- HEADER -->
+<header th:insert="~{include/header :: header}"></header>
+
+<main>
+    <!-- Navegación -->
+    <nav class="search-nav">
+        <a th:href="@{/}">Vuelos <i class="fa-solid fa-plane-up"></i></a>
+        <a th:href="@{/paquetes}" class="active">Paquetes <i class="fa-solid fa-box-open"></i></a>
+        <a th:href="@{/mapa}">Mapa <i class="fa-solid fa-map"></i></a>
+        <a th:href="@{/acerca}">Acerca de Nosotros <i class="fa-solid fa-circle-info"></i></a>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <h1 class="page-title">🌍 Descubre Nuestros Paquetes Eco-Sostenibles</h1>
+        <p class="page-subtitle">Rutas pre-diseñadas para una experiencia de viaje inolvidable y responsable.</p>
+
+        <div class="carousel-container">
+
+            <button class="carousel-btn prev-btn" id="prev-btn">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <section class="packages-grid" id="packages-grid">
+                <article class="package-card" data-package-id="LIMA_HIST_01">
+                    <img th:src="@{/img/reserva-lima.jpg}" alt="Lima Histórica" class="card-image">
+                    <div class="card-details">
+                        <h2>Lima: Ciudad de los Reyes (3 Días)</h2>
+                        <p class="price">$350 USD (por persona)</p>
+                        <div class="route-summary">
+                            <p><strong>Ruta:</strong> Lima (Centro Histórico) → Barranco (Arte) → Reserva de Lachay (Eco).</p>
+                            <p><strong>Incluye:</strong> Alojamiento Eco-Certificado, Transporte Eléctrico, Tour Gastronómico.</p>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-info open-details" data-target-modal="#details-lima">Ver Detalles</button>
+                            <button class="btn btn-primary open-reserve"
+                                    data-package-name="Lima: Ciudad de los Reyes"
+
+                                    data-daily-plan="Día 1: Arribo, traslado ecológico a Miraflores, cena de bienvenida con productos locales.|Día 2: Tour histórico a pie (Centro de Lima), visita a la Reserva de Lachay.|Día 3: Mañana de arte en Barranco y traslado al aeropuerto."
+
+                                    data-route-start-lat="-12.0464" data-route-start-lon="-77.0428"
+                                    data-route-end-lat="-12.1400" data-route-end-lon="-77.0270"
+                                    data-duration="1h 15m" data-distance="15km"
+                                    data-arrival-route="Aeropuerto Jorge Chávez (LIM) a Miraflores (30km, 1h 30m en hora punta)">
+                                Reservar
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="package-card" data-package-id="AREQUIPA_CAN_02">
+                    <img th:src="@{/img/reserva-arequipa.jpg}" alt="Arequipa Cañón" class="card-image">
+                    <div class="card-details">
+                        <h2>Arequipa: Cañón y Sillar (5 Días)</h2>
+                        <p class="price">$620 USD (por persona)</p>
+                        <div class="route-summary">
+                            <p><strong>Ruta:</strong> Arequipa (Monasterio) → Cañón del Colca (Trekking) → Ruta del Sillar.</p>
+                            <p><strong>Incluye:</strong> Guía Local, Hotel Sostenible, Desayuno con Productos Locales, Ticket para Colca.</p>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-info open-details" data-target-modal="#details-arequipa">Ver Detalles</button>
+                            <button class="btn btn-primary open-reserve"
+                                    data-package-name="Arequipa: Cañón y Sillar"
+
+                                    data-daily-plan="Día 1: Llegada a AQP y traslado ecológico, visita al Monasterio de Santa Catalina.|Día 2: Ruta del Sillar y talleres de artesanía local.|Día 3: Viaje a Chivay (Valle del Colca) con paradas de observación de flora y fauna.|Día 4: Mirador del Cóndor y trekking ligero, interacción con comunidad local.|Día 5: Regreso a Arequipa y traslado al aeropuerto."
+
+                                    data-route-start-lat="-16.4090" data-route-start-lon="-71.5350"
+                                    data-route-end-lat="-15.6000" data-route-end-lon="-71.8000"
+                                    data-duration="4h 00m" data-distance="160km"
+                                    data-arrival-route="Aeropuerto Rodríguez Ballón (AQP) a la Plaza de Armas (10km, 0h 40m en tráfico)">
+                                Reservar
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="package-card" data-package-id="CUSCO_INKA_03">
+                    <img th:src="@{/img/reserva-cusco.jpg}" alt="Cusco Camino Inka" class="card-image">
+                    <div class="card-details">
+                        <h2>Cusco: Aventura Inka (7 Días)</h2>
+                        <p class="price">$1,100 USD (por persona)</p>
+                        <div class="route-summary">
+                            <p><strong>Ruta:</strong> Cusco (Sacsayhuamán) → Valle Sagrado → Machu Picchu (Tren o Trekking Sostenible).</p>
+                            <p><strong>Incluye:</strong> Todos los transportes, Entradas a MP, Cena de Bienvenida, Certificado de CO2 neutro.</p>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-info open-details" data-target-modal="#details-cusco">Ver Detalles</button>
+                            <button class="btn btn-primary open-reserve"
+                                    data-package-name="Cusco: Aventura Inka"
+
+                                    data-daily-plan="Día 1: Llegada a CUZ, aclimatación en hotel sostenible y cena andina.|Día 2: City tour y visita a Sacsayhuamán (a pie para menor impacto).|Día 3: Exploración del Valle Sagrado (Pisac, Ollantaytambo), uso de transporte local.|Día 4: Inicio del trekking o tren ecológico hacia Aguas Calientes.|Día 5: Amanecer en Machu Picchu, tour cultural guiado.|Día 6: Retorno a Cusco y visita a mercados locales.|Día 7: Despedida y traslado al aeropuerto."
+
+                                    data-route-start-lat="-13.5183" data-route-start-lon="-71.9705"
+                                    data-route-end-lat="-13.1631" data-route-end-lon="-72.5450"
+                                    data-duration="4h 45m" data-distance="120km"
+                                    data-arrival-route="Aeropuerto Velasco Astete (CUZ) al Centro Histórico (5km, 0h 25m)">
+                                Reservar
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <button class="carousel-btn next-btn" id="next-btn">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+        </div>
+    </div>
+</main>
+
+<!-- MODALS -->
+<th:block th:insert="~{include/reservation-modal :: reservation-modal}"></th:block>
+<th:block th:insert="~{include/details-modals :: details-modals}"></th:block>
+<th:block th:insert="~{include/modals :: modals}"></th:block>
+
+<!-- FOOTER -->
+<footer th:insert="~{include/footer :: footer}"></footer>
+
+<!-- SCRIPTS -->
+<script th:src="@{/scripts/include.js}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const SERVER_CONFIG = {
+        apiKey: /*[[${geminiKeyFront}]]*/ 'ERROR_NO_HAY_CLAVE'
+    };
+    /*]]>*/
+</script>
+
+<script th:src="@{/scripts/paquetes.js}"></script>
+
+</body>
+</html>

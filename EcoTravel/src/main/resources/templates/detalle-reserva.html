@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de tu Viaje - EcoTravel</title>
+    <link rel="stylesheet" th:href="@{/estilos/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+<body>
+
+<header th:insert="~{include/header :: header}"></header>
+
+<nav class="search-nav">
+    <a th:href="@{/}">Vuelos <i class="fa-solid fa-plane-up"></i></a>
+    <a th:href="@{/paquetes}">Paquetes <i class="fa-solid fa-box-open"></i></a>
+    <a th:href="@{/mapa}">Mapa <i class="fa-solid fa-map"></i></a>
+    <a th:href="@{/acerca}">Acerca de Nosotros <i class="fa-solid fa-circle-info"></i></a>
+</nav>
+
+<div class="trip-hero" th:style="'background-image: url(' + ${imagenCabecera} + ');'">
+    <div class="trip-hero-overlay">
+        <span class="trip-badge">CONFIRMADO <i class="fa-solid fa-check"></i></span>
+        <h1 th:text="${reserva.nombrePaquete}">Nombre del Paquete</h1>
+        <p class="trip-dates">
+            <i class="fa-solid fa-calendar-day"></i> Inicio: <span th:text="${reserva.fechaInicio}"></span>
+        </p>
+    </div>
+</div>
+
+<main class="trip-container">
+
+    <div class="trip-stats">
+        <div class="stat-card">
+            <i class="fa-solid fa-users"></i>
+            <div>
+                <h5>Viajeros</h5>
+                <p th:text="${reserva.numeroPersonas} + ' Personas'"></p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <i class="fa-solid fa-receipt"></i>
+            <div>
+                <h5>Total Pagado</h5>
+                <p th:text="'$ ' + ${reserva.precioTotal}"></p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <i class="fa-solid fa-envelope"></i>
+            <div>
+                <h5>Contacto</h5>
+                <p th:text="${reserva.emailContacto}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="trip-content-grid">
+        <div class="trip-main">
+            <h3><i class="fa-solid fa-route"></i> Tu Itinerario de Viaje</h3>
+            <p class="trip-desc" th:text="${descripcion}">Descripción...</p>
+
+            <div class="timeline">
+                <div class="timeline-item" th:each="dia, stat : ${itinerario}">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4 th:text="'Día ' + ${stat.count}"></h4>
+                        <p th:text="${dia}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trip-notes" th:if="${reserva.notas != null and !reserva.notas.isEmpty()}">
+                <h4><i class="fa-solid fa-pen-to-square"></i> Tus Notas Especiales:</h4>
+                <p th:text="${reserva.notas}"></p>
+            </div>
+        </div>
+
+        <div class="trip-sidebar">
+            <div class="sidebar-box">
+                <h4>¿Necesitas ayuda?</h4>
+                <p class="sidebar-code">Código de reserva: <strong th:text="'#' + ${reserva.id}"></strong></p>
+
+                <div class="sidebar-actions">
+                    <a th:href="'https://wa.me/51999999999?text=Hola%20EcoTravel,%20necesito%20ayuda%20con%20mi%20reserva%20%23' + ${reserva.id}"
+                       target="_blank"
+                       class="btn btn-whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i> Contactar Soporte
+                    </a>
+
+                    <a th:href="@{/mis-reservas}" class="btn btn-outline-secondary">
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Mis Reservas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer th:insert="~{include/footer :: footer}"></footer>
+<script th:src="@{/scripts/include.js}"></script>
+
+</body>
+</html>

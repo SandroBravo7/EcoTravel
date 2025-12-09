@@ -6,120 +6,208 @@
     <title>EcoTravel - Turismo Sostenible</title>
     <link rel="stylesheet" th:href="@{/estilos/styles.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-   crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 </head>
 
 <body>
-    <div id="header-placeholder"></div>
-    <main class="main-content">
-        <nav class="search-nav">
-            <a th:href="@{/}" class="active">Vuelos <i class="fa-solid fa-plane-up"></i></a>
-            <a href="/#">Paquetes <i class="fa-solid fa-box-open"></i></a>
-            <a th:href="@{/mapa}">Mapa <i class="fa-solid fa-map"></i></a>
-            <a href="/#">Acerca de Nosotros <i class="fa-solid fa-circle-info"></i></a>
-        </nav>
+<input type="hidden" id="session-status" th:value="${session.usuarioId != null}">
 
-        <section class="search-box">
-            <form>
-                <div class="radio-options">
-                    <input type="radio" id="ida-vuelta" name="trip-type" checked> <label for="ida-vuelta">Ida y vuelta</label>
-                    <input type="radio" id="solo-ida" name="trip-type"> <label for="solo-ida">Solo ida</label>
-                    <input type="radio" id="multidestino" name="trip-type"> <label for="multidestino">Multidestino</label>
-                </div>
-                
-                <div class="input-fields">
-                    <div class="input-group">
-                        <label for="origen"><i class="fa-solid fa-location-dot"></i></label> 
-                        <select id="origen">
-                            <option>Lima</option>
-                            <option>Arequipa</option>
-                            <option>Cusco</option>
-                            </select>
-                    </div>
-                    <div class="input-group">
-                        <label for="destino"><i class="fa-solid fa-location-dot"></i></label>
-                        <select id="destino">
-                            <option>Lima</option>
-                            <option>Arequipa</option>
-                            <option>Cusco</option>
-                            </select>
-                    </div>
-                    <button type="submit" class="btn btn-search">BUSCAR <i class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
-            </form>
-        </section>
+<header th:insert="~{include/header :: header}"></header>
 
+<main>
+    <nav class="search-nav">
+        <a th:href="@{/}" class="active">Vuelos <i class="fa-solid fa-plane-up"></i></a>
+        <a th:href="@{/paquetes}">Paquetes <i class="fa-solid fa-box-open"></i></a>
+        <a th:href="@{/mapa}">Mapa <i class="fa-solid fa-map"></i></a>
+        <a th:href="@{/acerca}">Acerca de Nosotros <i class="fa-solid fa-circle-info"></i></a>
+    </nav>
+
+    <section class="search-box">
+        <form id="search-form">
+
+            <div class="input-fields">
+                <div class="input-group">
+                    <label for="origen"><i class="fa-solid fa-location-dot"></i></label>
+                    <select id="origen">
+                        <option>Lima</option>
+                        <option>Arequipa</option>
+                        <option>Cusco</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="destino-search"><i class="fa-solid fa-location-dot"></i></label>
+                    <select id="destino-search">
+                        <option value="all">Todos los destinos</option>
+                        <option value="lima">Lima</option>
+                        <option value="arequipa">Arequipa</option>
+                        <option value="cusco">Cusco</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-search">BUSCAR <i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </form>
+    </section>
+
+    <div class="main-content">
         <section class="destinations-grid">
-            <article class="destination-card" 
-                    data-img-main="img/lima1.jpg"
-                    data-img-second="img/lima2.jpg"
-                    data-img-third="img/lima3.jpg">
-                
+
+            <article class="destination-card"
+                     data-city="lima"
+                     data-img-main="/img/lima1.jpg"
+                     data-img-second="/img/lima2.jpg"
+                     data-img-third="/img/lima3.jpg">
+
                 <img th:src="@{/img/lima1.jpg}" alt="Lima" class="card-image main-image">
-                
+
                 <div class="thumbnail-previews">
-                    <span class="preview-dot" data-preview-src="img/lima1.jpg"></span>
-                    <span class="preview-dot" data-preview-src="img/lima2.jpg"></span>
-                    <span class="preview-dot" data-preview-src="img/lima3.jpg"></span>
+                    <span class="preview-dot active" th:data-preview-src="@{/img/lima1.jpg}"></span>
+                    <span class="preview-dot" th:data-preview-src="@{/img/lima2.jpg}"></span>
+                    <span class="preview-dot" th:data-preview-src="@{/img/lima3.jpg}"></span>
                 </div>
-                
+
                 <h2>Lima</h2>
                 <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
                 <div class="card-actions">
-                    <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button> 
-                    <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button> 
+                    <button class="btn btn-reserve open-reserve"
+                            data-package-id="LIMA_FLEX_01"
+                            data-package-name="Experiencia Lima (Flexible)"
+                            data-price-per-day="85"  data-duration="3"        data-daily-plan="Día 1: Llegada.|Día 2: Centro Histórico.|Día 3: Gastronomía.">
+                        Reservar <i class="fa-solid fa-plane"></i>
+                    </button>
+                    <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button>
                 </div>
             </article>
 
             <article class="destination-card"
-                    data-img-main="img/arequipa1.jpg"
-                    data-img-second="img/arequipa2.jpg"
-                    data-img-third="img/arequipa3.jpg">
+                     data-city="arequipa"
+                     data-img-main="/img/arequipa1.jpg"
+                     data-img-second="/img/arequipa2.jpg"
+                     data-img-third="/img/arequipa3.jpg">
 
                 <img th:src="@{/img/arequipa1.jpg}" alt="Arequipa" class="card-image main-image">
-                
+
                 <div class="thumbnail-previews">
-                    <span class="preview-dot" data-preview-src="img/arequipa1.jpg"></span>
-                    <span class="preview-dot" data-preview-src="img/arequipa2.jpg"></span>
-                    <span class="preview-dot" data-preview-src="img/arequipa3.jpg"></span>
+                    <span class="preview-dot active" th:data-preview-src="@{/img/arequipa1.jpg}"></span>
+                    <span class="preview-dot" th:data-preview-src="@{/img/arequipa2.jpg}"></span>
+                    <span class="preview-dot" th:data-preview-src="@{/img/arequipa3.jpg}"></span>
                 </div>
-                
+
                 <h2>Arequipa</h2>
-                <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
+                <p>La ciudad blanca y el majestuoso Cañón del Colca te esperan...</p>
                 <div class="card-actions">
-                    <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button> 
-                    <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button> 
+                    <button class="btn btn-reserve open-reserve"
+                            data-package-id="AREQUIPA_FLEX_02"
+                            data-package-name="Experiencia Arequipa (Flexible)"
+                            data-price-per-day="90"
+                            data-duration="4"
+                            data-daily-plan="Día 1: Monasterio Santa Catalina.|Día 2: Ruta del Sillar.|Día 3: Cañón del Colca.|Día 4: Mirador de los Volcanes.">
+                        Reservar <i class="fa-solid fa-plane"></i>
+                    </button>
+                    <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button>
                 </div>
             </article>
-            
+
             <article class="destination-card"
-                    data-img-main="img/cusco1.jpg"
-                    data-img-second="img/cusco2.jpg"
-                    data-img-third="img/cusco3.jpg">
+                     data-city="cusco"
+                     data-img-main="/img/cusco1.jpg"
+                     data-img-second="/img/cusco2.jpg"
+                     data-img-third="/img/cusco3.jpg">
 
                 <img th:src="@{/img/cusco1.jpg}" alt="Cusco" class="card-image main-image">
-                
+
                 <div class="thumbnail-previews">
-                    <span class="preview-dot" data-preview-src="img/cusco1.jpg"></span>
-                    <span class="preview-dot" data-preview-src="img/cusco2.jpg"></span>
-                    <span class="preview-dot" data-preview-src="img/cusco3.jpg"></span>
+                    <span class="preview-dot active" th:data-preview-src="@{/img/cusco1.jpg}"></span>
+                    <span class="preview-dot" th:data-preview-src="@{/img/cusco2.jpg}"></span>
+                    <span class="preview-dot" th:data-preview-src="@{/img/cusco3.jpg}"></span>
                 </div>
-                
+
                 <h2>Cusco</h2>
-                <p>Lima es la capital de Perú, ubicada en la costa central. Conocida como la "Ciudad de los Reyes"...</p>
+                <p>Capital arqueológica de América y puerta a Machu Picchu...</p>
                 <div class="card-actions">
-                    <button class="btn btn-reserve">Reservar <i class="fa-solid fa-plane"></i></button>
+                    <button class="btn btn-reserve open-reserve"
+                            data-package-id="CUSCO_FLEX_03"
+                            data-package-name="Experiencia Cusco (Flexible)"
+                            data-price-per-day="120"
+                            data-duration="5"
+                            data-daily-plan="Día 1: Aclimatación y Plaza.|Día 2: Sacsayhuamán.|Día 3: Valle Sagrado.|Día 4: Machu Picchu.|Día 5: Montaña de Colores.">
+                        Reservar <i class="fa-solid fa-plane"></i>
+                    </button>
                     <button class="btn btn-info"><i class="fa-solid fa-circle-info"></i></button>
                 </div>
             </article>
         </section>
+    </div>
+</main>
 
-    </main>
+<th:block th:insert="~{include/reservation-modal :: reservation-modal}"></th:block>
+<th:block th:insert="~{include/modals :: modals}"></th:block>
 
-    <div th:insert="~{include/modals :: modals}"></div>
-    <div id="footer-placeholder"></div>
-    <script th:src="@{/scripts/include.js}"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<footer th:insert="~{include/footer :: footer}"></footer>
+
+<script th:src="@{/scripts/include.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const SERVER_CONFIG = {
+        apiKey: /*[[${geminiKeyFront}]]*/ 'ERROR_CLAVE'
+    };
+    /*]]>*/
+</script>
+
+<script th:src="@{/scripts/paquetes.js}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- A. LÓGICA DE BÚSQUEDA ---
+        const searchForm = document.getElementById('search-form');
+        const destinoSelect = document.getElementById('destino-search');
+        const cards = document.querySelectorAll('.destination-card');
+
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Evita recarga
+            const filtro = destinoSelect.value.toLowerCase();
+
+            cards.forEach(card => {
+                const ciudad = card.getAttribute('data-city');
+                if (filtro === 'all' || ciudad === filtro) {
+                    card.style.display = 'block';
+                    // Pequeña animación de entrada
+                    card.style.opacity = '0';
+                    setTimeout(() => card.style.opacity = '1', 50);
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // --- B. LÓGICA DE GALERÍA DE IMÁGENES ---
+        cards.forEach(card => {
+            const mainImg = card.querySelector('.main-image');
+            const dots = card.querySelectorAll('.preview-dot');
+
+            dots.forEach(dot => {
+                // Al pasar el mouse por el punto
+                dot.addEventListener('mouseenter', () => {
+                    const newSrc = dot.getAttribute('data-preview-src');
+
+                    // Efecto visual
+                    mainImg.style.opacity = '0.7';
+
+                    // Cambiamos imagen y clase activa
+                    setTimeout(() => {
+                        mainImg.src = newSrc;
+                        mainImg.style.opacity = '1';
+                    }, 150);
+
+                    dots.forEach(d => d.classList.remove('active'));
+                    dot.classList.add('active');
+                });
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

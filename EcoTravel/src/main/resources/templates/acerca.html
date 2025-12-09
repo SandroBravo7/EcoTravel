@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTravel - Acerca de Nosotros</title>
+
+    <!-- Estilos propios -->
+    <link rel="stylesheet" th:href="@{/estilos/styles.css}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+
+<body>
+<!-- Guardar el estado de sesión -->
+<input type="hidden" id="session-status" th:value="${session.usuarioId != null}">
+
+<!-- Header -->
+<header th:insert="~{include/header :: header}"></header>
+
+<main>
+    <!-- Navegación -->
+    <nav class="search-nav">
+        <a th:href="@{/index}">Vuelos <i class="fa-solid fa-plane-up"></i></a>
+        <a th:href="@{/paquetes}">Paquetes <i class="fa-solid fa-box-open"></i></a>
+        <a th:href="@{/mapa}">Mapa <i class="fa-solid fa-map"></i></a>
+        <a th:href="@{/acerca}" class="active">Acerca de Nosotros <i class="fa-solid fa-circle-info"></i></a>
+    </nav>
+
+    <div class="main-content">
+        <h1 class="page-title">💚 EcoTravel: Viaja de Forma Responsable</h1>
+        <p class="page-subtitle">Nuestra misión es conectar a los viajeros con la belleza de Perú, respetando el medio ambiente y apoyando a las comunidades locales.</p>
+
+        <!-- Misión y Visión -->
+        <section class="mission-vision-section">
+            <article class="mission-card">
+                <h2>Nuestra Misión</h2>
+                <p>Ser la plataforma de viajes líder en Perú, ofreciendo experiencias <span class="highlight-green">100% eco-sostenibles</span>. Promovemos rutas con baja huella de carbono, desde el uso de vehículos eléctricos hasta alojamientos certificados y el apoyo a pequeños agricultores.</p>
+            </article>
+            <article class="mission-card">
+                <h2>Nuestra Visión</h2>
+                <p>Lograr que el 50% de nuestros tours sean neutros en carbono para 2028. Visualizamos un futuro donde viajar y cuidar el planeta no sean mutuamente excluyentes, sino la misma experiencia.</p>
+            </article>
+        </section>
+
+        <!-- Compromiso -->
+        <section class="commitment-section">
+            <h2>🤝 Nuestro Compromiso es con el Planeta y la Comunidad</h2>
+
+            <div class="image-text-block reverse-layout">
+                <div class="text-content">
+                    <h3>Certificación y Transparencia</h3>
+                    <p>No solo decimos que somos sostenibles; lo demostramos. EcoTravel se adhiere a las directrices globales de turismo responsable, auditando constantemente nuestra huella de carbono y la de nuestros aliados.</p>
+                    <p>Cada tour y cada boleto contribuye a nuestro **Fondo de Reforestación** en la Sierra Peruana. Puedes ver el impacto de tu viaje en tiempo real.</p>
+                    <p class="highlight-red"><i class="fa-solid fa-square-check"></i> Consulta nuestros informes de impacto ambiental anuales.</p>
+                </div>
+                <img th:src="@{/img/certificacion.png}" alt="Gráfico de certificación o informe" class="info-image">
+            </div>
+
+            <div class="image-text-block">
+                <div class="text-content">
+                    <h3>Apoyo a la Economía Circular Local</h3>
+                    <p>Nuestro modelo de negocio prioriza el <span class="highlight-red">100% de proveedores locales</span> en cada destino (Lima, Cusco, Arequipa y más). Esto asegura que tu inversión no solo mejore tu experiencia, sino que fortalezca directamente la economía de las comunidades que visitas.</p>
+                    <p>Trabajamos con pequeños hoteles, transportistas familiares y chefs que utilizan productos de Km 0 (cero kilómetros) para garantizar la frescura y reducir la cadena de suministro.</p>
+                    <p class="highlight-red"><i class="fa-solid fa-hand-holding-heart"></i> ¡Turismo Justo, precios justos para todos!</p>
+                </div>
+                <img th:src="@{/img/comunidad_local.jpg}" alt="Comunidad local en Perú" class="info-image">
+            </div>
+        </section>
+
+        <!-- Valores -->
+        <section class="values-section">
+            <h2>✨ Nuestros Pilares</h2>
+            <div class="values-grid">
+                <article class="value-item">
+                    <i class="fa-solid fa-tree"></i>
+                    <h3>Impacto Cero</h3>
+                    <p>Minimizamos la huella ecológica y compensamos el 100% de nuestras emisiones.</p>
+                </article>
+                <article class="value-item">
+                    <i class="fa-solid fa-handshake-angle"></i>
+                    <h3>Transparencia</h3>
+                    <p>Sabrás exactamente dónde va cada dólar que inviertes en tu viaje sostenible.</p>
+                </article>
+                <article class="value-item">
+                    <i class="fa-solid fa-heart"></i>
+                    <h3>Comunidad</h3>
+                    <p>Priorizamos y empoderamos a las empresas y guías locales de Perú.</p>
+                </article>
+            </div>
+        </section>
+    </div>
+</main>
+
+<!-- MODALS -->
+<div th:insert="~{include/modals :: modals}"></div>
+
+<!-- FOOTER -->
+<footer th:insert="~{include/footer :: footer}"></footer>
+
+<!-- Scripts -->
+<script th:src="@{/scripts/include.js}"></script>
+</body>
+</html>

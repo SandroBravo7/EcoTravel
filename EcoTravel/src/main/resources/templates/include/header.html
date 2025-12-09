@@ -1,0 +1,25 @@
+<header class="header-top" th:fragment="header">
+    <a href="/" class="logo">EcoTravel</a>
+
+    <div class="header-actions">
+
+        <div th:unless="${session.usuarioId}" class="guest-actions">
+            <button class="btn btn-login">Iniciar sesión</button>
+            <button class="btn btn-register">Registrarse</button>
+        </div>
+
+        <div th:if="${session.usuarioId}" class="logged-in-actions" style="display: flex; align-items: center; gap: 15px;">
+
+            <a th:href="@{/mis-reservas}" class="btn btn-mis-reservas">
+                <i class="fa-solid fa-bookmark"></i> Mis Reservas
+            </a>
+
+            <span class="user-greeting">
+                ¡Hola, <span th:text="${session.usuarioName}">Usuario</span>!
+            </span>
+
+            <a th:href="@{/desloguearse}" class="btn btn-danger btn-logout">Cerrar Sesión</a>
+        </div>
+
+    </div>
+</header>
