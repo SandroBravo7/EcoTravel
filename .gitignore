@@ -1,0 +1,7 @@
+# Ignorar configuraciones de IDEs
+.idea/
+.vscode/
+
+# Ignorar secretos (CRÍTICO)
+**/secrets.properties
+secrets.properties
