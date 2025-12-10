@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ECOTRAVEL - HOJA DE ESTILOS PRINCIPAL (ORGANIZADA)
+   ECOTRAVEL - HOJA DE ESTILOS PRINCIPAL (CON FIX DE BÚSQUEDA)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -59,7 +59,7 @@ a {
 }
 
 .header-actions i {
-    color: black !important; /* Forzar el color para iconos fontawesome */
+    color: black !important;
 }
 
 /* Botones del Header */
@@ -118,7 +118,6 @@ a {
     transition: color 0.3s ease;
 }
 
-/* Animación de la raya inferior */
 .search-nav a::after {
     content: '';
     position: absolute;
@@ -272,7 +271,6 @@ main {
     overflow: hidden;
 }
 
-/* Puntos de previsualización (Dots) */
 .thumbnail-previews {
     position: absolute;
     left: 50%;
@@ -362,21 +360,21 @@ main {
 }
 
 /* --------------------------------------------------------------------------
-   5. CARRUSEL (Slider de Paquetes)
+   5. CARRUSEL (ESTILO NORMAL)
    -------------------------------------------------------------------------- */
 .carousel-container {
     position: relative;
     margin: 20px auto;
     max-width: 1000px;
     padding: 0;
-    overflow: hidden;
+    overflow: hidden; /* Esto es lo que causa conflicto al buscar */
     display: flex;
     justify-content: center;
 }
 
-.packages-grid { /* Sobrescribe grid para ser flex en carrusel */
+.packages-grid {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; /* Esto fuerza una sola línea */
     width: 100%;
     padding: 40px 0;
     scroll-behavior: smooth;
@@ -428,11 +426,40 @@ main {
 .prev-btn { left: 20px; }
 .next-btn { right: 20px; }
 
+
+/* ==========================================================================
+   5.1. FIX: MODO BÚSQUEDA (ESTA ES LA PARTE QUE ARREGLA TU PROBLEMA)
+   ========================================================================== */
+.modo-busqueda .packages-grid {
+    display: flex !important;
+    flex-wrap: wrap !important; /* Permite que las tarjetas bajen de línea */
+    justify-content: center !important;
+    overflow: visible !important; /* Muestra lo que antes se ocultaba */
+    transform: none !important; /* Evita que el carrusel mueva las cosas */
+    width: 100% !important;
+    gap: 20px;
+}
+
+/* Ocultar las flechas cuando se está buscando */
+.modo-busqueda .carousel-btn {
+    display: none !important;
+}
+
+/* Restaurar el estilo de las tarjetas para que se vean bien en cuadrícula */
+.modo-busqueda .package-card {
+    flex: 0 0 300px !important; /* Ancho fijo para los resultados */
+    max-width: 300px !important;
+    margin: 20px !important;
+    opacity: 1 !important; /* Quita la transparencia del carrusel */
+    transform: scale(1) !important; /* Quita el efecto de zoom */
+}
+
+
 /* --------------------------------------------------------------------------
-   6. MODALES (Login, Registro, Reserva)
+   6. MODALES
    -------------------------------------------------------------------------- */
 .modal-overlay {
-    display: none; /* Controlado por JS */
+    display: none;
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
@@ -482,7 +509,7 @@ main {
     cursor: pointer; color: #6c757d; font-size: 1.1em; z-index: 10;
 }
 
-/* --- Modal Grande de Reserva (Específico) --- */
+/* Modal Reserva Grande */
 #reservation-modal .modal-content {
     max-width: 900px !important;
     width: 95%;
@@ -492,7 +519,6 @@ main {
     max-height: 90vh;
 }
 
-/* Header Simple del Modal */
 .modal-header-simple {
     padding: 20px;
     border-bottom: 1px solid #ddd;
@@ -502,7 +528,6 @@ main {
 .modal-header-simple h2 { margin: 0; font-size: 1.5em; }
 .close-modal-x { background: none; border: none; font-size: 2em; cursor: pointer; color: #666; }
 
-/* Grid de 2 Columnas para Reserva */
 .modal-body-grid {
     display: flex;
     height: 70vh; max-height: 600px;
@@ -523,7 +548,6 @@ main {
     background: white;
 }
 
-/* Componentes internos de Reserva */
 .info-box h4 { color: var(--color-primary); margin-top: 0; }
 .scroll-box {
     max-height: 150px; overflow-y: auto;
@@ -539,7 +563,6 @@ main {
     border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;
 }
 
-/* Pago Simulado */
 .payment-simulation {
     background-color: #f8f9fa; border: 1px solid #e9ecef;
     border-radius: 8px; padding: 15px; margin: 15px 0;
@@ -557,7 +580,7 @@ main {
 .input-with-icon input { padding-left: 30px !important; letter-spacing: 1px; }
 
 /* --------------------------------------------------------------------------
-   7. MIS RESERVAS (Tablas)
+   7. MIS RESERVAS
    -------------------------------------------------------------------------- */
 .reservas-container {
     max-width: 1200px; margin: 30px auto; padding: 0 20px;
@@ -579,7 +602,6 @@ main {
 .reservas-table tbody tr:hover { background-color: #f9f9f9; }
 .reservas-table tbody tr.fila-cancelada { opacity: 0.6; background-color: #fce8e6; }
 
-/* Badges */
 .estado-badge {
     display: inline-block; padding: 5px 12px; border-radius: 20px;
     font-weight: bold; font-size: 0.85em; text-transform: capitalize;
@@ -588,7 +610,6 @@ main {
 .estado-confirmada { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
 .estado-cancelada { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 
-/* Botones Tabla */
 .acciones-cell { display: flex; gap: 8px; justify-content: center; }
 .btn-small {
     padding: 6px 10px; font-size: 0.85em; border-radius: 5px; border: none;
@@ -599,7 +620,6 @@ main {
 .btn-view { background-color: var(--color-secondary); color: white; }
 .btn-cancel { background-color: #dc3545; color: white; }
 
-/* Alertas y Vacío */
 .alert {
     max-width: 1200px; margin: 20px auto; padding: 15px 20px;
     border-radius: 8px; display: flex; align-items: center; gap: 10px;
@@ -615,7 +635,7 @@ main {
 .no-reservas h2 { color: var(--color-primary); margin: 10px 0; }
 
 /* --------------------------------------------------------------------------
-   8. DETALLE RESERVA (Timeline & UI Moderna)
+   8. DETALLE RESERVA
    -------------------------------------------------------------------------- */
 .trip-hero {
     height: 450px; background-size: cover; background-position: center;
@@ -663,7 +683,6 @@ main {
 }
 .trip-desc { font-size: 1.1em; line-height: 1.6; color: #555; margin-bottom: 30px; }
 
-/* Timeline */
 .timeline {
     position: relative; border-left: 3px solid #e0e0e0;
     margin-left: 10px; padding-left: 30px;
@@ -686,7 +705,6 @@ main {
     border: 1px solid #ffeeba; color: #856404;
 }
 
-/* Sidebar */
 .sidebar-box {
     background: white; padding: 30px; border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid #eee; text-align: center;
@@ -783,79 +801,47 @@ main {
 .copy { margin-top: 15px; font-size: 0.8em; opacity: 0.8; }
 
 /* ==========================================================================
-   12. RESPONSIVE DESIGN (TABLETAS Y MÓVILES)
+   12. RESPONSIVE DESIGN
    ========================================================================== */
-
-/* TABLETAS (max 992px) */
 @media (max-width: 992px) {
-    /* Main */
     .trip-container { padding: 0 15px; }
-
-    /* Grids */
     .destinations-grid, .packages-grid, .trip-stats, .values-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
-    /* Sidebar en Detalle */
     .trip-content-grid { grid-template-columns: 1fr; margin-top: 20px; }
     .trip-sidebar { margin-top: 20px; }
-
-    /* Acerca de Nosotros */
     .mission-vision-section { flex-direction: column; }
     .image-text-block { flex-direction: column !important; text-align: center; }
     .image-text-block .info-image { margin-bottom: 20px; }
-
-    /* Mapa */
     .map-container { flex-direction: column; }
     #interactive-map, .map-sidebar { width: 100%; }
 }
 
-/* MÓVILES (max 768px) */
 @media (max-width: 768px) {
-    /* Header */
     .header-top { padding: 15px 20px; flex-direction: column; gap: 15px; text-align: center; }
     .header-actions { width: 100%; justify-content: center; flex-wrap: wrap; }
-
-    /* Nav */
     .search-nav { justify-content: center; gap: 15px; padding: 10px 20px; }
-
-    /* Buscador */
     .search-box { padding: 20px; }
     .input-fields { flex-direction: column; }
     .btn-search { width: 100%; justify-content: center; }
-
-    /* Contenido General */
     .main-content { padding: 0 15px; }
-
-    /* Grids a 1 columna */
     .destinations-grid, .packages-grid, .trip-stats, .values-grid {
         grid-template-columns: 1fr;
     }
-
-    /* Modal Reserva (Columna única) */
     .modal-body-grid { flex-direction: column; height: auto; max-height: 80vh; overflow-y: auto; }
     .modal-col-right { flex: none; width: 100%; padding: 20px; border-left: none; border-top: 1px solid #ddd; }
     .modal-col-left { flex: none; width: 100%; }
-
-    /* Carrusel */
     .package-card { flex: 0 0 85%; margin: 0 5px; }
-
-    /* Detalle Viaje */
     .trip-hero h1 { font-size: 2em; }
     .trip-container { top: 0; padding-top: 20px; }
-
-    /* Tablas */
     .reservas-table th, .reservas-table td { padding: 10px 5px; font-size: 0.85em; }
     .acciones-cell { flex-direction: column; }
     .btn-small { width: 100%; justify-content: center; }
-
-    /* Footer */
     .main-footer { flex-direction: column; padding: 30px 20px; }
     .footer-contact, .footer-social, .footer-brand { width: 100%; text-align: center; margin-bottom: 20px; }
     .footer-social { text-align: center; }
 }
 
-/* MÓVILES PEQUEÑOS (max 480px) */
 @media (max-width: 480px) {
     .logo { font-size: 1.2em; }
     .btn { width: 100%; }
